@@ -304,6 +304,118 @@
             text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
         }
 
+        /* Message Section */
+        .message-section {
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .message-card {
+            background: linear-gradient(135deg, rgba(131, 56, 236, 0.2), rgba(255, 0, 110, 0.2));
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(131, 56, 236, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .message-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .message-subtitle {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .message-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message-input {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(0, 245, 255, 0.3);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .message-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+        }
+
+        .send-btn {
+            padding: 14px 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border: none;
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(131, 56, 236, 0.4);
+        }
+
+        .send-btn:active {
+            transform: scale(0.98);
+        }
+
+        .send-btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            color: #1eff00;
+            font-size: 0.9em;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .success-message.show {
+            opacity: 1;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9em;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
         /* Games Section */
         .games-section {
             margin-bottom: 40px;
@@ -445,6 +557,20 @@
         .spotify-link:hover {
             transform: scale(1.05);
             box-shadow: 0 10px 30px rgba(131, 56, 236, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-top: 40px;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .footer p {
+            margin: 5px 0;
         }
 
         /* Animations */
@@ -636,6 +762,21 @@
             </div>
         </div>
 
+        <!-- Message Section -->
+        <div class="message-section">
+            <div class="section-title">💬 Send Me A Message</div>
+            <div class="message-card">
+                <div class="message-title">Anonymous Message</div>
+                <div class="message-subtitle">Got something on your mind? Drop a message and it'll come straight to me. No spam, no tracking, just genuine thoughts.</div>
+                <div class="message-form">
+                    <textarea class="message-input" id="messageInput" placeholder="What's on your mind? Your thoughts, feedback, or just say hi..."></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send Message 🚀</button>
+                    <div class="success-message" id="successMsg">✅ Message sent! Thanks for reaching out 💙</div>
+                    <div class="error-message" id="errorMsg">❌ Oops, something went wrong. Try again!</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Games Section -->
         <div class="games-section">
             <div class="section-title">🎮 Play & Have Fun</div>
@@ -684,7 +825,15 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <div class="footer">
+        <p>Made by myself, for myself 🚀</p>
+    </div>
+
     <script>
+        // Discord Webhook URL (keep this secret in production!)
+        const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1487404084683342037/bPAXBXz1WG7qSnkEdmi3FbD0VktZ3FHd5Z1Q3n0UqGO-wg7YpHg8y-i3oqo6mh0j7BqP';
+
         // ==================== PARTICLES ====================
         const particlesContainer = document.getElementById('particles-container');
         const particleCount = 50;
@@ -746,12 +895,76 @@
             }
         }
 
+        // ==================== DISCORD MESSAGE ====================
+        async function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            const sendBtn = document.getElementById('sendBtn');
+            const successMsg = document.getElementById('successMsg');
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (!message) {
+                errorMsg.textContent = '❌ Please write something!';
+                errorMsg.classList.add('show');
+                setTimeout(() => errorMsg.classList.remove('show'), 3000);
+                return;
+            }
+
+            // Hide previous messages
+            successMsg.classList.remove('show');
+            errorMsg.classList.remove('show');
+
+            // Show loading state
+            sendBtn.classList.add('loading');
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Sending...';
+
+            try {
+                const response = await fetch(DISCORD_WEBHOOK, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: `📨 **New Message from Your Linktree**\n\n${message}\n\n*Sent at: ${new Date().toLocaleString()}*`
+                    })
+                });
+
+                if (response.ok) {
+                    // Success
+                    messageInput.value = '';
+                    successMsg.classList.add('show');
+                    setTimeout(() => successMsg.classList.remove('show'), 4000);
+                    
+                    // Create sparkles on success
+                    createSparkles({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 });
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorMsg.classList.add('show');
+                setTimeout(() => errorMsg.classList.remove('show'), 3000);
+            } finally {
+                sendBtn.classList.remove('loading');
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Send Message 🚀';
+            }
+        }
+
+        // Allow Enter key to send (Ctrl+Enter on textarea)
+        document.getElementById('messageInput').addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
         // ==================== TYPING BIO ====================
         const bioTexts = [
-            "Creator • Designer • Vibing",
-            "Lost in music & aesthetics",
-            "building my own space online",
-            "premium links, premium vibes ✨"
+            "Future doctor • Passionate traveller",
+            "Medicine student exploring the world",
+            "Healing people • Exploring places",
+            "Driven by curiosity and compassion"
         ];
         let currentBioIndex = 0;
         let currentCharIndex = 0;
@@ -776,16 +989,14 @@
 
         // ==================== QUOTES ====================
         const quotes = [
-            { text: "Life is what happens when you're busy making other plans", author: "John Lennon" },
-            { text: "The only way to do great work is to love what you do", author: "Steve Jobs" },
-            { text: "Create your own sunshine", author: "Ralph Marston" },
-            { text: "Be yourself; everyone else is already taken", author: "Oscar Wilde" },
-            { text: "The future belongs to those who believe in the beauty of their dreams", author: "Eleanor Roosevelt" },
-            { text: "Don't watch the clock; do what it does. Keep going", author: "Sam Levenson" },
-            { text: "Your time is limited, so don't waste it living someone else's life", author: "Steve Jobs" },
-            { text: "The only impossible journey is the one you never begin", author: "Tony Robbins" },
-            { text: "Every moment is a fresh beginning", author: "T.S. Eliot" },
-            { text: "Chase your dreams like there's nothing in your way", author: "Anonymous" }
+            { text: "The best time to plant a tree was 20 years ago. The second best time is now", author: "Chinese Proverb" },
+            { text: "Medicine is not only a science; it is also an art", author: "Paracelsus" },
+            { text: "Travel is the only thing you buy that makes you richer", author: "Anonymous" },
+            { text: "Healing is a matter of time, but it is sometimes also a matter of opportunity", author: "Hippocrates" },
+            { text: "To travel is to live", author: "Hans Christian Andersen" },
+            { text: "The greatest glory in living lies not in never falling, but in rising every time we fall", author: "Nelson Mandela" },
+            { text: "Wherever you go becomes a part of you somehow", author: "Anita Desai" },
+            { text: "Health is a state of complete physical, mental and social well-being", author: "WHO Definition" }
         ];
 
         let currentQuoteIndex = 0;
@@ -813,8 +1024,8 @@
         typeQuote();
 
         // ==================== MOOD RANDOMIZER ====================
-        const moods = ['Lost in Music', 'Vibing Hard', 'Creating', 'Chilling', 'Inspired', 'Dreaming'];
-        const vibes = ['Vibing', 'Flowing', 'Shining', 'Glowing', 'Rising', 'Thriving'];
+        const moods = ['Studying', 'Traveling', 'Caring', 'Exploring', 'Learning', 'Growing'];
+        const vibes = ['Focused', 'Adventurous', 'Passionate', 'Inspired', 'Driven', 'Curious'];
 
         setInterval(() => {
             document.getElementById('status-mood').textContent = moods[Math.floor(Math.random() * moods.length)];
