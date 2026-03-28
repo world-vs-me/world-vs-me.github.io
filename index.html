@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardik - Links & Fun</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff006e;
+            --secondary: #8338ec;
+            --tertiary: #3a86ff;
+            --accent: #00f5ff;
+            --dark-bg: #0a0e27;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b5c1;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a0f2e 25%, #0f1a3f 50%, #0a0e27 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            position: relative;
+        }
+
+        /* Particle Background */
+        #particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.6;
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.8);
+        }
+
+        /* Magical Sparkles */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.5em;
+            animation: sparkleAnim 1s ease-out forwards;
+        }
+
+        /* Main Content */
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(0px);
+        }
+
+        /* Profile Section */
+        .profile-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 3px;
+            margin: 0 auto 25px;
+            box-shadow: 0 0 40px rgba(255, 0, 110, 0.6), 0 0 80px rgba(131, 56, 236, 0.3);
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .profile-pic::before {
+            content: '✨';
+            position: absolute;
+            font-size: 2em;
+            top: -15px;
+            right: -15px;
+            animation: rotate 3s linear infinite;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--dark-bg);
+        }
+
+        .username {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .bio-flags {
+            font-size: 2em;
+            margin-bottom: 15px;
+            animation: wave 2s ease-in-out infinite;
+            letter-spacing: 8px;
+        }
+
+        .bio {
+            font-size: 1em;
+            color: var(--text-secondary);
+            min-height: 25px;
+            margin-bottom: 20px;
+        }
+
+        .bio-text {
+            display: inline;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: var(--accent);
+            margin-left: 3px;
+            animation: blink 0.8s infinite;
+        }
+
+        /* Quotes Section */
+        .quotes-section {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(131, 56, 236, 0.1));
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(0, 245, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            margin-bottom: 40px;
+            text-align: center;
+            animation: fadeInDown 0.8s ease-out 0.1s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quotes-section::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 4em;
+            color: rgba(0, 245, 255, 0.2);
+        }
+
+        .quote-text {
+            font-size: 1.3em;
+            font-style: italic;
+            color: var(--text-secondary);
+            min-height: 50px;
+            margin-bottom: 15px;
+        }
+
+        .quote-author {
+            font-size: 0.9em;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .status-item .label {
+            font-weight: 600;
+            color: var(--accent);
+            margin-right: 8px;
+        }
+
+        /* Links Grid */
+        .links-section {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .link-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+            text-decoration: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .link-card:hover::before {
+            left: 100%;
+        }
+
+        .link-card:hover {
+            border-color: rgba(0, 245, 255, 0.5);
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 245, 255, 0.15), 0 0 40px rgba(255, 0, 110, 0.1);
+        }
+
+        .link-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            transition: transform 0.4s ease;
+        }
+
+        .link-card:hover .link-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .link-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        .link-card:hover .link-name {
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+        }
+
+        /* Games Section */
+        .games-section {
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, rgba(131, 56, 236, 0.2), rgba(255, 0, 110, 0.2));
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(131, 56, 236, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .game-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        /* Emoji Game */
+        .emoji-game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .emoji-card {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.2), rgba(131, 56, 236, 0.2));
+            border: 2px solid rgba(0, 245, 255, 0.3);
+            border-radius: 12px;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .emoji-card:hover {
+            transform: scale(1.05);
+            border-color: rgba(0, 245, 255, 0.8);
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.4), rgba(131, 56, 236, 0.4));
+        }
+
+        .emoji-card.matched {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .emoji-card.flipped {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.3), rgba(0, 245, 255, 0.3));
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 245, 255, 0.2);
+            color: var(--text-secondary);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Now Playing */
+        .now-playing {
+            margin-top: 40px;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .now-playing-card {
+            background: linear-gradient(135deg, rgba(131, 56, 236, 0.2), rgba(255, 0, 110, 0.2));
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(131, 56, 236, 0.4);
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .now-playing-title {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .now-playing-text {
+            font-size: 1.2em;
+            color: var(--accent);
+            margin-bottom: 15px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .spotify-link {
+            display: inline-block;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .spotify-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(131, 56, 236, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes blink {
+            0%, 49%, 100% {
+                opacity: 1;
+            }
+            50%, 99% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes wave {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes sparkleAnim {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .username {
+                font-size: 2em;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .link-card {
+                min-height: 160px;
+            }
+
+            .profile-pic {
+                width: 100px;
+                height: 100px;
+            }
+
+            .emoji-game-board {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-container"></div>
+
+    <div class="container">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-pic">
+                <img src="https://cdn.discordapp.com/attachments/909328295378702337/1487180749323894935/IMG_8904.jpg?ex=69c83481&is=69c6e301&hm=e164c6e79e688c650d890fb6b74fe098b6cfd0c31ce424e2edde103bfd31a741&" alt="Profile">
+            </div>
+            <h1 class="username">Hardik</h1>
+            <div class="bio-flags">🇮🇳🇺🇦🇵🇱🇺🇿🇰🇿</div>
+            <p class="bio">
+                <span class="bio-text" id="bio-text"></span>
+                <span class="typing-cursor"></span>
+            </p>
+        </div>
+
+        <!-- Quotes Section -->
+        <div class="quotes-section">
+            <div class="quote-text" id="quote-display">
+                <span id="quote-text"></span><span class="typing-cursor"></span>
+            </div>
+            <div class="quote-author" id="quote-author"></div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="label">🎵</span>
+                <span id="status-mood">Lost in Music</span>
+            </div>
+            <div class="status-item">
+                <span class="label">✨</span>
+                <span id="status-vibe">Vibing</span>
+            </div>
+        </div>
+
+        <!-- Links Section -->
+        <div class="links-section">
+            <div class="section-title">🔗 Connect With Me</div>
+            <div class="links-grid">
+                <a href="https://www.instagram.com/hxr.d1k_/" class="link-card" target="_blank" onclick="createSparkles(event)">
+                    <div class="link-icon">📸</div>
+                    <div class="link-name">Instagram</div>
+                </a>
+
+                <a href="https://snapchat.com/t/vFarL20X" class="link-card" target="_blank" onclick="createSparkles(event)">
+                    <div class="link-icon">👻</div>
+                    <div class="link-name">Snapchat</div>
+                </a>
+
+                <a href="https://pin.it/5NceMlQD5" class="link-card" target="_blank" onclick="createSparkles(event)">
+                    <div class="link-icon">📌</div>
+                    <div class="link-name">Pinterest</div>
+                </a>
+
+                <a href="https://open.spotify.com/user/313kdis3wuynj2266vafritabcv4?si=yMbbZYb1RweN9vWzMH2bNw" class="link-card" target="_blank" onclick="createSparkles(event)">
+                    <div class="link-icon">🎧</div>
+                    <div class="link-name">Spotify</div>
+                </a>
+
+                <a href="https://discordapp.com/users/777759728562470952" class="link-card" target="_blank" onclick="createSparkles(event)">
+                    <div class="link-icon">💬</div>
+                    <div class="link-name">Discord</div>
+                </a>
+
+                <a href="mailto:hardikmathur2003@icloud.com" class="link-card" onclick="createSparkles(event)">
+                    <div class="link-icon">✉️</div>
+                    <div class="link-name">Email</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Games Section -->
+        <div class="games-section">
+            <div class="section-title">🎮 Play & Have Fun</div>
+            <div class="game-card">
+                <div class="game-title">🎲 Emoji Matching Game</div>
+                <div class="emoji-game-board" id="emoji-game-board"></div>
+                <div class="game-stats">
+                    <div class="stat">
+                        <div class="stat-label">Moves</div>
+                        <div class="stat-value" id="moves">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Matched</div>
+                        <div class="stat-value" id="matched">0/8</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Time</div>
+                        <div class="stat-value" id="timer">0s</div>
+                    </div>
+                </div>
+                <button onclick="resetGame()" style="
+                    margin-top: 20px;
+                    padding: 12px 30px;
+                    background: linear-gradient(135deg, #8338ec, #ff006e);
+                    border: none;
+                    color: white;
+                    border-radius: 50px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    Reset Game
+                </button>
+            </div>
+        </div>
+
+        <!-- Now Playing -->
+        <div class="now-playing">
+            <div class="now-playing-card">
+                <div class="now-playing-title">Currently Listening To 🎵</div>
+                <div class="now-playing-text" id="now-playing">Your Vibe Right Now</div>
+                <a href="https://open.spotify.com/user/313kdis3wuynj2266vafritabcv4?si=yMbbZYb1RweN9vWzMH2bNw" class="spotify-link" target="_blank">
+                    Open Spotify
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== PARTICLES ====================
+        const particlesContainer = document.getElementById('particles-container');
+        const particleCount = 50;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * window.innerWidth;
+                this.y = Math.random() * window.innerHeight;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.element = document.createElement('div');
+                this.element.className = 'particle';
+                this.element.style.left = this.x + 'px';
+                this.element.style.top = this.y + 'px';
+                particlesContainer.appendChild(this.element);
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
+                if (this.y < 0 || this.y > window.innerHeight) this.vy *= -1;
+
+                this.element.style.left = this.x + 'px';
+                this.element.style.top = this.y + 'px';
+            }
+        }
+
+        const particles = [];
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            particles.forEach(p => p.update());
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ==================== SPARKLES ====================
+        function createSparkles(event) {
+            for (let i = 0; i < 12; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                const angle = (Math.PI * 2 * i) / 12;
+                const velocity = 5 + Math.random() * 5;
+                const tx = Math.cos(angle) * velocity * 50;
+                const ty = Math.sin(angle) * velocity * 50;
+                
+                sparkle.style.left = event.clientX + 'px';
+                sparkle.style.top = event.clientY + 'px';
+                sparkle.style.setProperty('--tx', tx + 'px');
+                sparkle.style.setProperty('--ty', ty + 'px');
+                sparkle.textContent = ['✨', '💫', '⭐', '🌟'][Math.floor(Math.random() * 4)];
+                
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+        }
+
+        // ==================== TYPING BIO ====================
+        const bioTexts = [
+            "Creator • Designer • Vibing",
+            "Lost in music & aesthetics",
+            "building my own space online",
+            "premium links, premium vibes ✨"
+        ];
+        let currentBioIndex = 0;
+        let currentCharIndex = 0;
+        const bioElement = document.getElementById('bio-text');
+
+        function typeNextCharacter() {
+            const currentText = bioTexts[currentBioIndex];
+            if (currentCharIndex < currentText.length) {
+                bioElement.textContent += currentText[currentCharIndex];
+                currentCharIndex++;
+                setTimeout(typeNextCharacter, 50);
+            } else {
+                setTimeout(() => {
+                    bioElement.textContent = '';
+                    currentCharIndex = 0;
+                    currentBioIndex = (currentBioIndex + 1) % bioTexts.length;
+                    setTimeout(typeNextCharacter, 500);
+                }, 3000);
+            }
+        }
+        typeNextCharacter();
+
+        // ==================== QUOTES ====================
+        const quotes = [
+            { text: "Life is what happens when you're busy making other plans", author: "John Lennon" },
+            { text: "The only way to do great work is to love what you do", author: "Steve Jobs" },
+            { text: "Create your own sunshine", author: "Ralph Marston" },
+            { text: "Be yourself; everyone else is already taken", author: "Oscar Wilde" },
+            { text: "The future belongs to those who believe in the beauty of their dreams", author: "Eleanor Roosevelt" },
+            { text: "Don't watch the clock; do what it does. Keep going", author: "Sam Levenson" },
+            { text: "Your time is limited, so don't waste it living someone else's life", author: "Steve Jobs" },
+            { text: "The only impossible journey is the one you never begin", author: "Tony Robbins" },
+            { text: "Every moment is a fresh beginning", author: "T.S. Eliot" },
+            { text: "Chase your dreams like there's nothing in your way", author: "Anonymous" }
+        ];
+
+        let currentQuoteIndex = 0;
+        let quoteCharIndex = 0;
+        const quoteText = document.getElementById('quote-text');
+        const quoteAuthor = document.getElementById('quote-author');
+
+        function typeQuote() {
+            const currentQuote = quotes[currentQuoteIndex].text;
+            if (quoteCharIndex < currentQuote.length) {
+                quoteText.textContent += currentQuote[quoteCharIndex];
+                quoteCharIndex++;
+                setTimeout(typeQuote, 40);
+            } else {
+                quoteAuthor.textContent = '— ' + quotes[currentQuoteIndex].author;
+                setTimeout(() => {
+                    quoteText.textContent = '';
+                    quoteAuthor.textContent = '';
+                    quoteCharIndex = 0;
+                    currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+                    setTimeout(typeQuote, 500);
+                }, 4000);
+            }
+        }
+        typeQuote();
+
+        // ==================== MOOD RANDOMIZER ====================
+        const moods = ['Lost in Music', 'Vibing Hard', 'Creating', 'Chilling', 'Inspired', 'Dreaming'];
+        const vibes = ['Vibing', 'Flowing', 'Shining', 'Glowing', 'Rising', 'Thriving'];
+
+        setInterval(() => {
+            document.getElementById('status-mood').textContent = moods[Math.floor(Math.random() * moods.length)];
+            document.getElementById('status-vibe').textContent = vibes[Math.floor(Math.random() * vibes.length)];
+        }, 4000);
+
+        // ==================== NOW PLAYING ====================
+        const nowPlayingTracks = [
+            "🎶 Marvin's Room - Drake",
+            "🎵 Hotline Bling - Drake",
+            "💫 Take Care - Drake",
+            "✨ Fake Love - Drake",
+            "🌟 Wonderful - The Lumineers",
+            "💫 Ophelia - The Lumineers",
+            "🎵 Stubborn Love - The Lumineers",
+            "🔥 Young Love - The Lumineers",
+            "💔 Video Games - Lana Del Rey",
+            "🌙 Young and Beautiful - Lana Del Rey",
+            "✨ Summertime Sadness - Lana Del Rey",
+            "🎶 Lust for Life - Lana Del Rey"
+        ];
+
+        setInterval(() => {
+            const randomTrack = nowPlayingTracks[Math.floor(Math.random() * nowPlayingTracks.length)];
+            document.getElementById('now-playing').textContent = randomTrack;
+        }, 5000);
+
+        // ==================== EMOJI MATCHING GAME ====================
+        const emojis = ['🎮', '🎮', '🎨', '🎨', '🎵', '🎵', '🚀', '🚀', '💫', '💫', '🔥', '🔥', '⭐', '⭐', '🌈', '🌈'];
+        let gameBoard = [];
+        let firstCard = null;
+        let secondCard = null;
+        let moves = 0;
+        let matched = 0;
+        let canClick = true;
+        let gameStartTime = Date.now();
+        let gameActive = false;
+
+        function shuffleEmojis() {
+            gameBoard = [...emojis].sort(() => Math.random() - 0.5);
+        }
+
+        function initGame() {
+            shuffleEmojis();
+            const board = document.getElementById('emoji-game-board');
+            board.innerHTML = '';
+            moves = 0;
+            matched = 0;
+            firstCard = null;
+            secondCard = null;
+            canClick = true;
+            gameActive = true;
+            gameStartTime = Date.now();
+            document.getElementById('moves').textContent = '0';
+            document.getElementById('matched').textContent = '0/8';
+            document.getElementById('timer').textContent = '0s';
+
+            gameBoard.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.className = 'emoji-card';
+                card.textContent = '?';
+                card.dataset.index = index;
+                card.onclick = () => flipCard(card, index);
+                board.appendChild(card);
+            });
+
+            startTimer();
+        }
+
+        function flipCard(card, index) {
+            if (!canClick || gameBoard[index] === 'matched' || card.classList.contains('flipped')) return;
+
+            card.textContent = gameBoard[index];
+            card.classList.add('flipped');
+
+            if (!firstCard) {
+                firstCard = { card, index };
+            } else if (!secondCard) {
+                secondCard = { card, index };
+                canClick = false;
+                moves++;
+                document.getElementById('moves').textContent = moves;
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const match = gameBoard[firstCard.index] === gameBoard[secondCard.index];
+
+            setTimeout(() => {
+                if (match) {
+                    firstCard.card.classList.add('matched');
+                    secondCard.card.classList.add('matched');
+                    gameBoard[firstCard.index] = 'matched';
+                    gameBoard[secondCard.index] = 'matched';
+                    matched++;
+                    document.getElementById('matched').textContent = `${matched}/8`;
+
+                    if (matched === 8) {
+                        gameActive = false;
+                        setTimeout(() => alert(`🎉 You won in ${moves} moves!`), 300);
+                    }
+                } else {
+                    firstCard.card.textContent = '?';
+                    firstCard.card.classList.remove('flipped');
+                    secondCard.card.textContent = '?';
+                    secondCard.card.classList.remove('flipped');
+                }
+
+                firstCard = null;
+                secondCard = null;
+                canClick = true;
+            }, 800);
+        }
+
+        function startTimer() {
+            const timerInterval = setInterval(() => {
+                if (!gameActive) {
+                    clearInterval(timerInterval);
+                    return;
+                }
+                const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+                document.getElementById('timer').textContent = elapsed + 's';
+            }, 100);
+        }
+
+        function resetGame() {
+            initGame();
+        }
+
+        initGame();
+    </script>
+</body>
+</html>
