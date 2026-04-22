@@ -3,689 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hardik - Links & Fun</title>
+    <title>Hardik</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #ff006e;
             --secondary: #8338ec;
-            --tertiary: #3a86ff;
             --accent: #00f5ff;
             --dark-bg: #0a0e27;
-            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.07);
+            --card-border: rgba(255, 255, 255, 0.1);
             --text-primary: #ffffff;
-            --text-secondary: #b0b5c1;
+            --text-secondary: #9ba3b8;
         }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-        }
+        html, body { width: 100%; overflow-x: hidden; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a0f2e 25%, #0f1a3f 50%, #0a0e27 100%);
+            background: linear-gradient(135deg, #0a0e27 0%, #1a0f2e 40%, #0f1a3f 70%, #0a0e27 100%);
             background-attachment: fixed;
             color: var(--text-primary);
-            position: relative;
         }
 
-        /* Particle Background */
-        #particles-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
+        /* Particles */
+        #particles-container { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
         .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 50%;
-            opacity: 0.6;
-            box-shadow: 0 0 20px rgba(0, 245, 255, 0.8);
+            position: absolute; width: 3px; height: 3px;
+            background: var(--accent); border-radius: 50%;
+            opacity: 0.35; box-shadow: 0 0 10px rgba(0,245,255,0.6);
         }
-
-        /* Magical Sparkles */
         .sparkle {
-            position: fixed;
-            pointer-events: none;
-            font-size: 1.5em;
-            animation: sparkleAnim 1s ease-out forwards;
+            position: fixed; pointer-events: none; font-size: 1.3em; z-index: 999;
+            animation: sparkleAnim 0.9s ease-out forwards;
         }
 
-        /* Main Content */
+        /* Layout */
         .container {
-            position: relative;
-            z-index: 10;
+            position: relative; z-index: 10;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            backdrop-filter: blur(0px);
+            display: flex; flex-direction: column; align-items: center;
+            padding: 60px 20px 40px;
+            max-width: 920px; margin: 0 auto;
         }
 
-        /* Profile Section */
-        .profile-section {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
+        /* Profile */
+        .profile-section { text-align: center; margin-bottom: 34px; animation: fadeInDown 0.7s ease-out; }
         .profile-pic {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
+            width: 112px; height: 112px; border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 3px;
-            margin: 0 auto 25px;
-            box-shadow: 0 0 40px rgba(255, 0, 110, 0.6), 0 0 80px rgba(131, 56, 236, 0.3);
-            animation: float 3s ease-in-out infinite;
-            position: relative;
+            padding: 3px; margin: 0 auto 18px;
+            box-shadow: 0 0 32px rgba(255,0,110,0.5), 0 0 64px rgba(131,56,236,0.2);
+            animation: float 3.5s ease-in-out infinite;
         }
-
-        .profile-pic::before {
-            content: '✨';
-            position: absolute;
-            font-size: 2em;
-            top: -15px;
-            right: -15px;
-            animation: rotate 3s linear infinite;
-        }
-
         .profile-pic img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--dark-bg);
+            width: 100%; height: 100%; border-radius: 50%;
+            object-fit: cover; border: 2px solid var(--dark-bg); display: block;
         }
-
         .username {
-            font-size: 2.5em;
-            font-weight: 700;
+            font-size: 2.3em; font-weight: 700;
             background: linear-gradient(135deg, var(--accent), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 5px;
-            letter-spacing: 0.5px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 6px; letter-spacing: 0.5px;
         }
-
-        .bio-flags {
-            font-size: 2em;
-            margin-bottom: 15px;
-            animation: wave 2s ease-in-out infinite;
-            letter-spacing: 8px;
-        }
-
-        .bio {
-            font-size: 1em;
-            color: var(--text-secondary);
-            min-height: 25px;
-            margin-bottom: 20px;
-        }
-
-        .bio-text {
-            display: inline;
-        }
-
+        .bio-flags { font-size: 1.6em; margin-bottom: 10px; letter-spacing: 5px; }
+        .bio { font-size: 0.93em; color: var(--text-secondary); min-height: 22px; }
         .typing-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.2em;
-            background: var(--accent);
-            margin-left: 3px;
-            animation: blink 0.8s infinite;
+            display: inline-block; width: 2px; height: 1em;
+            background: var(--accent); margin-left: 2px;
+            vertical-align: text-bottom; animation: blink 0.8s infinite;
         }
 
-        /* Quotes Section */
+        /* Quote */
         .quotes-section {
-            background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(131, 56, 236, 0.1));
+            background: linear-gradient(135deg, rgba(0,245,255,0.06), rgba(131,56,236,0.06));
             backdrop-filter: blur(20px);
-            border: 1.5px solid rgba(0, 245, 255, 0.3);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
-            margin-bottom: 40px;
-            text-align: center;
-            animation: fadeInDown 0.8s ease-out 0.1s both;
+            border: 1px solid rgba(0,245,255,0.18);
+            border-radius: 18px; padding: 26px 30px;
+            width: 100%; max-width: 560px; margin-bottom: 32px;
+            text-align: center; animation: fadeInDown 0.7s ease-out 0.1s both;
             position: relative;
-            overflow: hidden;
         }
-
         .quotes-section::before {
-            content: '"';
-            position: absolute;
-            top: 10px;
-            left: 15px;
-            font-size: 4em;
-            color: rgba(0, 245, 255, 0.2);
+            content: '"'; position: absolute; top: 6px; left: 12px;
+            font-size: 3.2em; color: rgba(0,245,255,0.13); line-height: 1;
         }
-
         .quote-text {
-            font-size: 1.3em;
-            font-style: italic;
-            color: var(--text-secondary);
-            min-height: 50px;
-            margin-bottom: 15px;
+            font-size: 1.1em; font-style: italic;
+            color: var(--text-secondary); min-height: 46px;
+            margin-bottom: 10px; line-height: 1.65;
         }
+        .quote-author { font-size: 0.82em; color: var(--accent); font-weight: 600; }
 
-        .quote-author {
-            font-size: 0.9em;
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        /* Status Bar */
+        /* Status */
         .status-bar {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
+            display: flex; gap: 10px; justify-content: center;
+            margin-bottom: 38px; flex-wrap: wrap;
+            animation: fadeInDown 0.7s ease-out 0.15s both;
         }
-
         .status-item {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 245, 255, 0.2);
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            animation: slideIn 0.6s ease-out;
+            background: var(--card-bg); backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,245,255,0.12);
+            padding: 9px 18px; border-radius: 50px;
+            font-size: 0.86em; color: var(--text-secondary);
         }
 
-        .status-item .label {
-            font-weight: 600;
-            color: var(--accent);
-            margin-right: 8px;
-        }
-
-        /* Links Grid */
-        .links-section {
-            width: 100%;
-            margin-bottom: 40px;
-        }
-
+        /* Section Title */
         .section-title {
-            font-size: 1.5em;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 25px;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 0.74em; font-weight: 700; text-align: center;
+            margin-bottom: 18px; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 3.5px;
         }
 
+        /* Links */
+        .links-section { width: 100%; margin-bottom: 40px; animation: fadeInUp 0.7s ease-out 0.2s both; }
         .links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            max-width: 900px;
-            margin: 0 auto;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px; max-width: 740px; margin: 0 auto;
         }
-
         .link-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1.5px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 24px;
-            text-decoration: none;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 200px;
+            background: var(--card-bg); backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border); border-radius: 16px;
+            padding: 20px 14px; text-decoration: none; color: var(--text-primary);
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 8px; min-height: 100px;
+            position: relative; overflow: hidden;
+            transition: all 0.32s cubic-bezier(0.23, 1, 0.32, 1);
         }
-
-        .link-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.2), transparent);
-            transition: left 0.6s ease;
+        .link-card::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(0,245,255,0.07), transparent);
+            opacity: 0; transition: opacity 0.32s;
         }
-
-        .link-card:hover::before {
-            left: 100%;
-        }
-
-        .link-card:hover {
-            border-color: rgba(0, 245, 255, 0.5);
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0, 245, 255, 0.15), 0 0 40px rgba(255, 0, 110, 0.1);
-        }
-
-        .link-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-            transition: transform 0.4s ease;
-        }
-
-        .link-card:hover .link-icon {
-            transform: scale(1.2) rotate(10deg);
-        }
-
-        .link-name {
-            font-size: 1.3em;
-            font-weight: 700;
-            text-align: center;
-            transition: color 0.3s ease;
-        }
-
-        .link-card:hover .link-name {
-            color: var(--accent);
-            text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
-        }
-
-        /* Message Section */
-        .message-section {
-            margin-bottom: 40px;
-            width: 100%;
-        }
-
-        .message-card {
-            background: linear-gradient(135deg, rgba(131, 56, 236, 0.2), rgba(255, 0, 110, 0.2));
-            backdrop-filter: blur(20px);
-            border: 1.5px solid rgba(131, 56, 236, 0.4);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-            animation: fadeInUp 0.8s ease-out 0.3s both;
-        }
-
-        .message-title {
-            font-size: 1.5em;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--accent);
-        }
-
-        .message-subtitle {
-            font-size: 0.95em;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .message-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .message-input {
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1.5px solid rgba(0, 245, 255, 0.3);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 1em;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .message-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .message-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
-        }
-
-        .send-btn {
-            padding: 14px 30px;
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            border: none;
-            color: white;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1em;
-        }
-
-        .send-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(131, 56, 236, 0.4);
-        }
-
-        .send-btn:active {
-            transform: scale(0.98);
-        }
-
-        .send-btn.loading {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .success-message {
-            color: #1eff00;
-            font-size: 0.9em;
-            margin-top: 10px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .success-message.show {
-            opacity: 1;
-        }
-
-        .error-message {
-            color: #ff6b6b;
-            font-size: 0.9em;
-            margin-top: 10px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .error-message.show {
-            opacity: 1;
-        }
-
-        /* Games Section */
-        .games-section {
-            margin-bottom: 40px;
-            width: 100%;
-        }
-
-        .game-card {
-            background: linear-gradient(135deg, rgba(131, 56, 236, 0.2), rgba(255, 0, 110, 0.2));
-            backdrop-filter: blur(20px);
-            border: 1.5px solid rgba(131, 56, 236, 0.4);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-            animation: fadeInUp 0.8s ease-out 0.3s both;
-        }
-
-        .game-title {
-            font-size: 1.5em;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--accent);
-        }
-
-        /* Emoji Game */
-        .emoji-game-board {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .emoji-card {
-            width: 100%;
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, rgba(0, 245, 255, 0.2), rgba(131, 56, 236, 0.2));
-            border: 2px solid rgba(0, 245, 255, 0.3);
-            border-radius: 12px;
-            font-size: 2em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .emoji-card:hover {
-            transform: scale(1.05);
-            border-color: rgba(0, 245, 255, 0.8);
-            background: linear-gradient(135deg, rgba(0, 245, 255, 0.4), rgba(131, 56, 236, 0.4));
-        }
-
-        .emoji-card.matched {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .emoji-card.flipped {
-            background: linear-gradient(135deg, rgba(255, 0, 110, 0.3), rgba(0, 245, 255, 0.3));
-        }
-
-        .game-stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(0, 245, 255, 0.2);
-            color: var(--text-secondary);
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 0.8em;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
+        .link-card:hover { border-color: rgba(0,245,255,0.35); transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,245,255,0.09); }
+        .link-card:hover::after { opacity: 1; }
+        .link-icon { font-size: 1.85em; transition: transform 0.32s; }
+        .link-card:hover .link-icon { transform: scale(1.12); }
+        .link-name { font-size: 0.82em; font-weight: 600; color: var(--text-secondary); transition: color 0.3s; }
+        .link-card:hover .link-name { color: var(--text-primary); }
 
         /* Now Playing */
-        .now-playing {
-            margin-top: 40px;
-            margin-bottom: 40px;
-            animation: fadeInUp 0.8s ease-out 0.4s both;
-        }
-
+        .now-playing { margin-bottom: 40px; width: 100%; max-width: 400px; animation: fadeInUp 0.7s ease-out 0.25s both; }
         .now-playing-card {
-            background: linear-gradient(135deg, rgba(131, 56, 236, 0.2), rgba(255, 0, 110, 0.2));
-            backdrop-filter: blur(20px);
-            border: 1.5px solid rgba(131, 56, 236, 0.4);
-            border-radius: 20px;
-            padding: 24px;
-            max-width: 400px;
-            margin: 0 auto;
-            text-align: center;
+            background: var(--card-bg); backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border); border-radius: 18px;
+            padding: 22px 24px; text-align: center;
         }
-
-        .now-playing-title {
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
+        .now-playing-label {
+            font-size: 0.7em; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 3px; font-weight: 600; margin-bottom: 10px;
         }
-
-        .now-playing-text {
-            font-size: 1.2em;
-            color: var(--accent);
-            margin-bottom: 15px;
-            animation: pulse 2s ease-in-out infinite;
+        .now-playing-track {
+            font-size: 1em; color: var(--accent); margin-bottom: 16px;
+            min-height: 26px; animation: pulse 2.5s ease-in-out infinite;
         }
-
         .spotify-link {
-            display: inline-block;
-            padding: 10px 24px;
+            display: inline-block; padding: 8px 20px;
             background: linear-gradient(135deg, var(--secondary), var(--primary));
-            border-radius: 50px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 0.95em;
+            border-radius: 50px; color: white; text-decoration: none;
+            font-weight: 600; font-size: 0.85em; transition: all 0.3s;
         }
+        .spotify-link:hover { transform: scale(1.04); box-shadow: 0 8px 22px rgba(131,56,236,0.4); }
 
-        .spotify-link:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(131, 56, 236, 0.4);
+        /* Pinterest Corner */
+        .pinterest-section { width: 100%; margin-bottom: 44px; animation: fadeInUp 0.7s ease-out 0.3s both; }
+        .pinterest-header {
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; margin-bottom: 18px;
         }
+        .pinterest-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #e60023; box-shadow: 0 0 8px rgba(230,0,35,0.55);
+        }
+        .pinterest-mosaic {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 160px;
+            gap: 10px;
+            max-width: 740px; margin: 0 auto;
+        }
+        .pin-item {
+            border-radius: 14px; overflow: hidden;
+            position: relative; cursor: pointer;
+            transition: transform 0.32s ease, box-shadow 0.32s ease;
+        }
+        .pin-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+        .pin-item:nth-child(6) { grid-column: span 2; }
+        .pin-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .pin-item::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.4));
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .pin-item:hover { transform: scale(1.025); box-shadow: 0 12px 28px rgba(0,0,0,0.4); }
+        .pin-item:hover::after { opacity: 1; }
+        .pinterest-cta { text-align: center; margin-top: 16px; }
+        .pinterest-btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 10px 24px; background: #e60023;
+            border-radius: 50px; color: white; text-decoration: none;
+            font-weight: 600; font-size: 0.88em;
+            box-shadow: 0 4px 14px rgba(230,0,35,0.28);
+            transition: all 0.3s;
+        }
+        .pinterest-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(230,0,35,0.45); }
+
+        /* Message */
+        .message-section { margin-bottom: 44px; width: 100%; max-width: 540px; animation: fadeInUp 0.7s ease-out 0.35s both; }
+        .message-card {
+            background: var(--card-bg); backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border); border-radius: 18px;
+            padding: 26px; text-align: center;
+        }
+        .message-card-title { font-size: 1.1em; font-weight: 700; margin-bottom: 6px; }
+        .message-card-sub { font-size: 0.86em; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.6; }
+        .message-input {
+            width: 100%; padding: 13px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(0,245,255,0.18);
+            border-radius: 12px; color: var(--text-primary);
+            font-size: 0.93em; font-family: inherit;
+            min-height: 100px; resize: vertical;
+            margin-bottom: 12px; display: block;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .message-input::placeholder { color: rgba(255,255,255,0.3); }
+        .message-input:focus { outline: none; border-color: rgba(0,245,255,0.45); background: rgba(255,255,255,0.08); }
+        .send-btn {
+            width: 100%; padding: 12px 24px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border: none; color: white; border-radius: 12px;
+            font-weight: 600; cursor: pointer; font-size: 0.93em;
+            transition: all 0.3s;
+        }
+        .send-btn:hover { transform: scale(1.02); box-shadow: 0 8px 22px rgba(131,56,236,0.4); }
+        .send-btn:active { transform: scale(0.99); }
+        .send-btn.loading { opacity: 0.6; cursor: not-allowed; }
+        .feedback-msg { font-size: 0.86em; margin-top: 10px; opacity: 0; transition: opacity 0.3s; }
+        .feedback-msg.success { color: #4ade80; }
+        .feedback-msg.error   { color: #f87171; }
+        .feedback-msg.show    { opacity: 1; }
 
         /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            margin-top: 40px;
-            animation: fadeInUp 0.8s ease-out 0.5s both;
-        }
-
-        .footer p {
-            margin: 5px 0;
-        }
+        .footer { text-align: center; padding: 16px; color: var(--text-secondary); font-size: 0.8em; opacity: 0.5; }
 
         /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-15px);
-            }
-        }
-
-        @keyframes blink {
-            0%, 49%, 100% {
-                opacity: 1;
-            }
-            50%, 99% {
-                opacity: 0;
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.7;
-            }
-        }
-
-        @keyframes wave {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes sparkleAnim {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--tx), var(--ty)) scale(0);
-            }
-        }
+        @keyframes fadeInDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeInUp   { from { opacity:0; transform:translateY(20px);  } to { opacity:1; transform:translateY(0); } }
+        @keyframes float      { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+        @keyframes blink      { 0%,49%,100%{opacity:1;} 50%,99%{opacity:0;} }
+        @keyframes pulse      { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+        @keyframes sparkleAnim { 0%{opacity:1;transform:translate(0,0) scale(1);} 100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0);} }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .username {
-                font-size: 2em;
-            }
-
-            .links-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .link-card {
-                min-height: 160px;
-            }
-
-            .profile-pic {
-                width: 100px;
-                height: 100px;
-            }
-
-            .emoji-game-board {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        @media (max-width: 620px) {
+            .container { padding: 38px 14px 28px; }
+            .username  { font-size: 1.85em; }
+            .links-grid { grid-template-columns: repeat(4, 1fr); gap: 9px; }
+            .link-card  { min-height: 80px; padding: 14px 8px; gap: 6px; }
+            .link-icon  { font-size: 1.5em; }
+            .link-name  { font-size: 0.72em; }
+            .pinterest-mosaic { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; }
+            .pin-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+            .pin-item:nth-child(6) { grid-column: span 1; }
         }
     </style>
 </head>
@@ -693,470 +274,222 @@
     <div id="particles-container"></div>
 
     <div class="container">
-        <!-- Profile Section -->
+
+        <!-- Profile -->
         <div class="profile-section">
             <div class="profile-pic">
-                <img src="https://cdn.discordapp.com/attachments/909328295378702337/1487180749323894935/IMG_8904.jpg?ex=69c83481&is=69c6e301&hm=e164c6e79e688c650d890fb6b74fe098b6cfd0c31ce424e2edde103bfd31a741&" alt="Profile">
+                <img src="https://jmgbb.com/i/eLZgsi0oFE" alt="Profile">
             </div>
             <h1 class="username">Hardik</h1>
             <div class="bio-flags">🇮🇳🇺🇦🇵🇱🇺🇿🇰🇿</div>
-            <p class="bio">
-                <span class="bio-text" id="bio-text"></span>
-                <span class="typing-cursor"></span>
-            </p>
+            <p class="bio"><span id="bio-text"></span><span class="typing-cursor"></span></p>
         </div>
 
-        <!-- Quotes Section -->
+        <!-- Quote -->
         <div class="quotes-section">
-            <div class="quote-text" id="quote-display">
-                <span id="quote-text"></span><span class="typing-cursor"></span>
-            </div>
+            <div class="quote-text"><span id="quote-text"></span><span class="typing-cursor"></span></div>
             <div class="quote-author" id="quote-author"></div>
         </div>
 
-        <!-- Status Bar -->
+        <!-- Status -->
         <div class="status-bar">
-            <div class="status-item">
-                <span class="label">🎵</span>
-                <span id="status-mood">Lost in Music</span>
-            </div>
-            <div class="status-item">
-                <span class="label">✨</span>
-                <span id="status-vibe">Vibing</span>
-            </div>
+            <div class="status-item"><span>🎵 </span><span id="status-mood">Vibing</span></div>
+            <div class="status-item"><span>✨ </span><span id="status-vibe">Inspired</span></div>
         </div>
 
-        <!-- Links Section -->
+        <!-- Links -->
         <div class="links-section">
-            <div class="section-title">🔗 Connect With Me</div>
+            <div class="section-title">Connect</div>
             <div class="links-grid">
-                <a href="https://www.instagram.com/hxr.d1k_/" class="link-card" target="_blank" onclick="createSparkles(event)">
-                    <div class="link-icon">📸</div>
-                    <div class="link-name">Instagram</div>
+                <a href="https://www.instagram.com/hxr.d1k_/" class="link-card" target="_blank" onclick="spark(event)">
+                    <div class="link-icon">📸</div><div class="link-name">Instagram</div>
                 </a>
-
-                <a href="https://snapchat.com/t/vFarL20X" class="link-card" target="_blank" onclick="createSparkles(event)">
-                    <div class="link-icon">👻</div>
-                    <div class="link-name">Snapchat</div>
+                <a href="https://snapchat.com/t/vFarL20X" class="link-card" target="_blank" onclick="spark(event)">
+                    <div class="link-icon">👻</div><div class="link-name">Snapchat</div>
                 </a>
-
-                <a href="https://pin.it/5NceMlQD5" class="link-card" target="_blank" onclick="createSparkles(event)">
-                    <div class="link-icon">📌</div>
-                    <div class="link-name">Pinterest</div>
+                <a href="https://pin.it/5NceMlQD5" class="link-card" target="_blank" onclick="spark(event)">
+                    <div class="link-icon">📌</div><div class="link-name">Pinterest</div>
                 </a>
-
-                <a href="https://open.spotify.com/user/313kdis3wuynj2266vafritabcv4?si=yMbbZYb1RweN9vWzMH2bNw" class="link-card" target="_blank" onclick="createSparkles(event)">
-                    <div class="link-icon">🎧</div>
-                    <div class="link-name">Spotify</div>
+                <a href="https://open.spotify.com/user/313kdis3wuynj2266vafritabcv4?si=yMbbZYb1RweN9vWzMH2bNw" class="link-card" target="_blank" onclick="spark(event)">
+                    <div class="link-icon">🎧</div><div class="link-name">Spotify</div>
                 </a>
-
-                <a href="https://discordapp.com/users/777759728562470952" class="link-card" target="_blank" onclick="createSparkles(event)">
-                    <div class="link-icon">💬</div>
-                    <div class="link-name">Discord</div>
+                <a href="https://discordapp.com/users/777759728562470952" class="link-card" target="_blank" onclick="spark(event)">
+                    <div class="link-icon">💬</div><div class="link-name">Discord</div>
                 </a>
-
-                <a href="mailto:hardikmathur2003@icloud.com" class="link-card" onclick="createSparkles(event)">
-                    <div class="link-icon">✉️</div>
-                    <div class="link-name">Email</div>
+                <a href="https://t.me/dilerbekbek" class="link-card" target="_blank" onclick="spark(event)">
+                    <div class="link-icon">✈️</div><div class="link-name">Telegram</div>
                 </a>
-            </div>
-        </div>
-
-        <!-- Message Section -->
-        <div class="message-section">
-            <div class="section-title">💬 Send Me A Message</div>
-            <div class="message-card">
-                <div class="message-title">Anonymous Message</div>
-                <div class="message-subtitle">Got something on your mind? Drop a message and it'll come straight to me. No spam, no tracking, just genuine thoughts.</div>
-                <div class="message-form">
-                    <textarea class="message-input" id="messageInput" placeholder="What's on your mind? Your thoughts, feedback, or just say hi..."></textarea>
-                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send Message 🚀</button>
-                    <div class="success-message" id="successMsg">✅ Message sent! Thanks for reaching out 💙</div>
-                    <div class="error-message" id="errorMsg">❌ Oops, something went wrong. Try again!</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Games Section -->
-        <div class="games-section">
-            <div class="section-title">🎮 Play & Have Fun</div>
-            <div class="game-card">
-                <div class="game-title">🎲 Emoji Matching Game</div>
-                <div class="emoji-game-board" id="emoji-game-board"></div>
-                <div class="game-stats">
-                    <div class="stat">
-                        <div class="stat-label">Moves</div>
-                        <div class="stat-value" id="moves">0</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">Matched</div>
-                        <div class="stat-value" id="matched">0/8</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">Time</div>
-                        <div class="stat-value" id="timer">0s</div>
-                    </div>
-                </div>
-                <button onclick="resetGame()" style="
-                    margin-top: 20px;
-                    padding: 12px 30px;
-                    background: linear-gradient(135deg, #8338ec, #ff006e);
-                    border: none;
-                    color: white;
-                    border-radius: 50px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                    Reset Game
-                </button>
+                <a href="mailto:hardikmathur2003@icloud.com" class="link-card" onclick="spark(event)">
+                    <div class="link-icon">✉️</div><div class="link-name">Email</div>
+                </a>
             </div>
         </div>
 
         <!-- Now Playing -->
         <div class="now-playing">
             <div class="now-playing-card">
-                <div class="now-playing-title">Currently Listening To 🎵</div>
-                <div class="now-playing-text" id="now-playing">Your Vibe Right Now</div>
-                <a href="https://open.spotify.com/user/313kdis3wuynj2266vafritabcv4?si=yMbbZYb1RweN9vWzMH2bNw" class="spotify-link" target="_blank">
-                    Open Spotify
+                <div class="now-playing-label">Currently listening to</div>
+                <div class="now-playing-track" id="now-playing">—</div>
+                <a href="https://open.spotify.com/user/313kdis3wuynj2266vafritabcv4?si=yMbbZYb1RweN9vWzMH2bNw" class="spotify-link" target="_blank">Open Spotify</a>
+            </div>
+        </div>
+
+        <!-- Pinterest Corner -->
+        <div class="pinterest-section">
+            <div class="pinterest-header">
+                <div class="pinterest-dot"></div>
+                <div class="section-title" style="margin-bottom:0">Pinterest Corner</div>
+                <div class="pinterest-dot"></div>
+            </div>
+            <div class="pinterest-mosaic">
+                <div class="pin-item"><img src="https://look.jmgbb.com/images/mnEsTS7EKU.jpg" alt="pin"></div>
+                <div class="pin-item"><img src="https://look.jmgbb.com/images/fUIq2c2tpV.jpg" alt="pin"></div>
+                <div class="pin-item"><img src="https://look.jmgbb.com/images/wwFULG4a-1.jpg" alt="pin"></div>
+                <div class="pin-item"><img src="https://look.jmgbb.com/images/hEqbIVxY7d.jpg" alt="pin"></div>
+                <div class="pin-item"><img src="https://look.jmgbb.com/images/OG8UICQIsj.jpg" alt="pin"></div>
+                <div class="pin-item"><img src="https://look.jmgbb.com/images/FcpY4wdhPC.jpg" alt="pin"></div>
+                <div class="pin-item"><img src="https://look.jmgbb.com/images/OR2pEe6XwX.jpg" alt="pin"></div>
+                <div class="pin-item"><img src="https://look.jmgbb.com/images/dpnze4RYNG.jpg" alt="pin"></div>
+            </div>
+            <div class="pinterest-cta">
+                <a href="https://pin.it/5NceMlQD5" class="pinterest-btn" target="_blank">
+                    <span>📌</span> View my Pinterest
                 </a>
             </div>
         </div>
+
+        <!-- Message -->
+        <div class="message-section">
+            <div class="section-title">Anonymous Message</div>
+            <div class="message-card">
+                <div class="message-card-title">Drop me something 💬</div>
+                <div class="message-card-sub">Say hi, share a thought, or leave a vibe. No tracking, no spam.</div>
+                <textarea class="message-input" id="messageInput" placeholder="What's on your mind?"></textarea>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send Message 🚀</button>
+                <div class="feedback-msg success" id="successMsg">✅ Message sent!</div>
+                <div class="feedback-msg error"   id="errorMsg">❌ Something went wrong. Try again.</div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        <p>Made by myself, for myself 🚀</p>
-    </div>
+    <div class="footer">made with care, for no one but myself ✦</div>
 
     <script>
-        // Discord Webhook URL (keep this secret in production!)
-        const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1487404084683342037/bPAXBXz1WG7qSnkEdmi3FbD0VktZ3FHd5Z1Q3n0UqGO-wg7YpHg8y-i3oqo6mh0j7BqP';
-
-        // ==================== PARTICLES ====================
-        const particlesContainer = document.getElementById('particles-container');
-        const particleCount = 50;
-
+        // Particles
+        const pc = document.getElementById('particles-container');
         class Particle {
             constructor() {
-                this.x = Math.random() * window.innerWidth;
-                this.y = Math.random() * window.innerHeight;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.element = document.createElement('div');
-                this.element.className = 'particle';
-                this.element.style.left = this.x + 'px';
-                this.element.style.top = this.y + 'px';
-                particlesContainer.appendChild(this.element);
+                this.x = Math.random() * innerWidth;
+                this.y = Math.random() * innerHeight;
+                this.vx = (Math.random() - 0.5) * 0.38;
+                this.vy = (Math.random() - 0.5) * 0.38;
+                this.el = Object.assign(document.createElement('div'), { className: 'particle' });
+                this.el.style.cssText = `left:${this.x}px;top:${this.y}px`;
+                pc.appendChild(this.el);
             }
-
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > innerWidth)  this.vx *= -1;
+                if (this.y < 0 || this.y > innerHeight) this.vy *= -1;
+                this.el.style.left = this.x + 'px'; this.el.style.top = this.y + 'px';
+            }
+        }
+        const pts = Array.from({ length: 38 }, () => new Particle());
+        (function loop() { pts.forEach(p => p.update()); requestAnimationFrame(loop); })();
 
-                if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
-                if (this.y < 0 || this.y > window.innerHeight) this.vy *= -1;
-
-                this.element.style.left = this.x + 'px';
-                this.element.style.top = this.y + 'px';
+        // Sparkles
+        function spark(e) {
+            const icons = ['✨','💫','⭐','🌟'];
+            for (let i = 0; i < 9; i++) {
+                const s = document.createElement('div');
+                s.className = 'sparkle';
+                const a = (Math.PI * 2 * i) / 9, v = 3.5 + Math.random() * 4;
+                s.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;--tx:${Math.cos(a)*v*42}px;--ty:${Math.sin(a)*v*42}px`;
+                s.textContent = icons[i % 4];
+                document.body.appendChild(s);
+                setTimeout(() => s.remove(), 900);
             }
         }
 
-        const particles = [];
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
+        // Bio typing
+        const bios = ['Future doctor · Passionate traveller', 'Medicine student exploring the world', 'Driven by curiosity and care'];
+        let bi = 0, bc = 0;
+        const bioEl = document.getElementById('bio-text');
+        function typeBio() {
+            if (bc < bios[bi].length) { bioEl.textContent += bios[bi][bc++]; setTimeout(typeBio, 54); }
+            else setTimeout(() => { bioEl.textContent = ''; bc = 0; bi = (bi + 1) % bios.length; setTimeout(typeBio, 400); }, 2800);
         }
+        typeBio();
 
-        function animateParticles() {
-            particles.forEach(p => p.update());
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-
-        // ==================== SPARKLES ====================
-        function createSparkles(event) {
-            for (let i = 0; i < 12; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                const angle = (Math.PI * 2 * i) / 12;
-                const velocity = 5 + Math.random() * 5;
-                const tx = Math.cos(angle) * velocity * 50;
-                const ty = Math.sin(angle) * velocity * 50;
-                
-                sparkle.style.left = event.clientX + 'px';
-                sparkle.style.top = event.clientY + 'px';
-                sparkle.style.setProperty('--tx', tx + 'px');
-                sparkle.style.setProperty('--ty', ty + 'px');
-                sparkle.textContent = ['✨', '💫', '⭐', '🌟'][Math.floor(Math.random() * 4)];
-                
-                document.body.appendChild(sparkle);
-                setTimeout(() => sparkle.remove(), 1000);
-            }
-        }
-
-        // ==================== DISCORD MESSAGE ====================
-        async function sendMessage() {
-            const messageInput = document.getElementById('messageInput');
-            const message = messageInput.value.trim();
-            const sendBtn = document.getElementById('sendBtn');
-            const successMsg = document.getElementById('successMsg');
-            const errorMsg = document.getElementById('errorMsg');
-
-            if (!message) {
-                errorMsg.textContent = '❌ Please write something!';
-                errorMsg.classList.add('show');
-                setTimeout(() => errorMsg.classList.remove('show'), 3000);
-                return;
-            }
-
-            // Hide previous messages
-            successMsg.classList.remove('show');
-            errorMsg.classList.remove('show');
-
-            // Show loading state
-            sendBtn.classList.add('loading');
-            sendBtn.disabled = true;
-            sendBtn.textContent = 'Sending...';
-
-            try {
-                const response = await fetch(DISCORD_WEBHOOK, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        content: `📨 **New Message from Your Linktree**\n\n${message}\n\n*Sent at: ${new Date().toLocaleString()}*`
-                    })
-                });
-
-                if (response.ok) {
-                    // Success
-                    messageInput.value = '';
-                    successMsg.classList.add('show');
-                    setTimeout(() => successMsg.classList.remove('show'), 4000);
-                    
-                    // Create sparkles on success
-                    createSparkles({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 });
-                } else {
-                    throw new Error('Failed to send');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                errorMsg.classList.add('show');
-                setTimeout(() => errorMsg.classList.remove('show'), 3000);
-            } finally {
-                sendBtn.classList.remove('loading');
-                sendBtn.disabled = false;
-                sendBtn.textContent = 'Send Message 🚀';
-            }
-        }
-
-        // Allow Enter key to send (Ctrl+Enter on textarea)
-        document.getElementById('messageInput').addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        // ==================== TYPING BIO ====================
-        const bioTexts = [
-            "Future doctor • Passionate traveller",
-            "Medicine student exploring the world",
-            "Healing people • Exploring places",
-            "Driven by curiosity and compassion"
-        ];
-        let currentBioIndex = 0;
-        let currentCharIndex = 0;
-        const bioElement = document.getElementById('bio-text');
-
-        function typeNextCharacter() {
-            const currentText = bioTexts[currentBioIndex];
-            if (currentCharIndex < currentText.length) {
-                bioElement.textContent += currentText[currentCharIndex];
-                currentCharIndex++;
-                setTimeout(typeNextCharacter, 50);
-            } else {
-                setTimeout(() => {
-                    bioElement.textContent = '';
-                    currentCharIndex = 0;
-                    currentBioIndex = (currentBioIndex + 1) % bioTexts.length;
-                    setTimeout(typeNextCharacter, 500);
-                }, 3000);
-            }
-        }
-        typeNextCharacter();
-
-        // ==================== QUOTES ====================
+        // Quotes
         const quotes = [
-            { text: "The best time to plant a tree was 20 years ago. The second best time is now", author: "Chinese Proverb" },
-            { text: "Medicine is not only a science; it is also an art", author: "Paracelsus" },
-            { text: "Travel is the only thing you buy that makes you richer", author: "Anonymous" },
-            { text: "Healing is a matter of time, but it is sometimes also a matter of opportunity", author: "Hippocrates" },
-            { text: "To travel is to live", author: "Hans Christian Andersen" },
-            { text: "The greatest glory in living lies not in never falling, but in rising every time we fall", author: "Nelson Mandela" },
-            { text: "Wherever you go becomes a part of you somehow", author: "Anita Desai" },
-            { text: "Health is a state of complete physical, mental and social well-being", author: "WHO Definition" }
+            { text: 'Not all those who wander are lost', author: 'J.R.R. Tolkien' },
+            { text: 'The cure for anything is salt water — sweat, tears, or the sea', author: 'Isak Dinesen' },
+            { text: 'Music gives a soul to the universe, wings to the mind', author: 'Plato' },
+            { text: 'The world is a book — those who do not travel read only one page', author: 'Saint Augustine' },
+            { text: 'Where there is love for mankind, there is love for the art of medicine', author: 'Hippocrates' },
+            { text: "One's destination is never a place, but a new way of seeing things", author: 'Henry Miller' },
+            { text: 'It always seems impossible until it\'s done', author: 'Nelson Mandela' },
+            { text: 'The purpose of life is to live it, to taste experience to the utmost', author: 'Eleanor Roosevelt' },
         ];
-
-        let currentQuoteIndex = 0;
-        let quoteCharIndex = 0;
-        const quoteText = document.getElementById('quote-text');
-        const quoteAuthor = document.getElementById('quote-author');
-
-        function typeQuote() {
-            const currentQuote = quotes[currentQuoteIndex].text;
-            if (quoteCharIndex < currentQuote.length) {
-                quoteText.textContent += currentQuote[quoteCharIndex];
-                quoteCharIndex++;
-                setTimeout(typeQuote, 40);
-            } else {
-                quoteAuthor.textContent = '— ' + quotes[currentQuoteIndex].author;
-                setTimeout(() => {
-                    quoteText.textContent = '';
-                    quoteAuthor.textContent = '';
-                    quoteCharIndex = 0;
-                    currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
-                    setTimeout(typeQuote, 500);
-                }, 4000);
+        let qi = 0, qc = 0;
+        const qEl = document.getElementById('quote-text'), qAuth = document.getElementById('quote-author');
+        function typeQ() {
+            if (qc < quotes[qi].text.length) { qEl.textContent += quotes[qi].text[qc++]; setTimeout(typeQ, 34); }
+            else {
+                qAuth.textContent = '— ' + quotes[qi].author;
+                setTimeout(() => { qEl.textContent = ''; qAuth.textContent = ''; qc = 0; qi = (qi+1)%quotes.length; setTimeout(typeQ, 400); }, 4000);
             }
         }
-        typeQuote();
+        typeQ();
 
-        // ==================== MOOD RANDOMIZER ====================
-        const moods = ['Studying', 'Traveling', 'Caring', 'Exploring', 'Learning', 'Growing'];
-        const vibes = ['Focused', 'Adventurous', 'Passionate', 'Inspired', 'Driven', 'Curious'];
-
+        // Status
+        const moods = ['Studying','Traveling','Exploring','Learning','Growing','Resting'];
+        const vibes = ['Focused','Adventurous','Inspired','Curious','Driven','Peaceful'];
         setInterval(() => {
-            document.getElementById('status-mood').textContent = moods[Math.floor(Math.random() * moods.length)];
-            document.getElementById('status-vibe').textContent = vibes[Math.floor(Math.random() * vibes.length)];
+            document.getElementById('status-mood').textContent = moods[Math.floor(Math.random()*moods.length)];
+            document.getElementById('status-vibe').textContent = vibes[Math.floor(Math.random()*vibes.length)];
         }, 4000);
 
-        // ==================== NOW PLAYING ====================
-        const nowPlayingTracks = [
-            "🎶 Marvin's Room - Drake",
-            "🎵 Hotline Bling - Drake",
-            "💫 Take Care - Drake",
-            "✨ Fake Love - Drake",
-            "🌟 Wonderful - The Lumineers",
-            "💫 Ophelia - The Lumineers",
-            "🎵 Stubborn Love - The Lumineers",
-            "🔥 Young Love - The Lumineers",
-            "💔 Video Games - Lana Del Rey",
-            "🌙 Young and Beautiful - Lana Del Rey",
-            "✨ Summertime Sadness - Lana Del Rey",
-            "🎶 Lust for Life - Lana Del Rey"
+        // Now Playing
+        const tracks = [
+            "🎶 Marvin's Room — Drake","🎵 Hotline Bling — Drake","💫 Take Care — Drake ft. Rihanna",
+            "✨ Fake Love — Drake","🔥 God's Plan — Drake","🌙 One Dance — Drake",
+            "🌟 Wonderful — The Lumineers","💫 Ophelia — The Lumineers","🎵 Stubborn Love — The Lumineers",
+            "🔥 Ho Hey — The Lumineers","💔 Video Games — Lana Del Rey","🌙 Young and Beautiful — Lana Del Rey",
+            "✨ Summertime Sadness — Lana Del Rey","🎶 Lust for Life — Lana Del Rey","🌊 Norman Fucking Rockwell — Lana Del Rey",
+            "🎵 Blinding Lights — The Weeknd","🌃 Starboy — The Weeknd","💜 Save Your Tears — The Weeknd",
+            "🎧 Can't Feel My Face — The Weeknd","🔮 Die For You — The Weeknd","🌹 Earned It — The Weeknd",
+            "🎶 Levitating — Dua Lipa","💃 Don't Start Now — Dua Lipa",
+            "🌟 As It Was — Harry Styles","🎵 Watermelon Sugar — Harry Styles",
         ];
+        const npEl = document.getElementById('now-playing');
+        npEl.textContent = tracks[Math.floor(Math.random()*tracks.length)];
+        setInterval(() => { npEl.textContent = tracks[Math.floor(Math.random()*tracks.length)]; }, 5500);
 
-        setInterval(() => {
-            const randomTrack = nowPlayingTracks[Math.floor(Math.random() * nowPlayingTracks.length)];
-            document.getElementById('now-playing').textContent = randomTrack;
-        }, 5000);
-
-        // ==================== EMOJI MATCHING GAME ====================
-        const emojis = ['🎮', '🎮', '🎨', '🎨', '🎵', '🎵', '🚀', '🚀', '💫', '💫', '🔥', '🔥', '⭐', '⭐', '🌈', '🌈'];
-        let gameBoard = [];
-        let firstCard = null;
-        let secondCard = null;
-        let moves = 0;
-        let matched = 0;
-        let canClick = true;
-        let gameStartTime = Date.now();
-        let gameActive = false;
-
-        function shuffleEmojis() {
-            gameBoard = [...emojis].sort(() => Math.random() - 0.5);
+        // Message
+        const WEBHOOK = 'https://discord.com/api/webhooks/1487404084683342037/bPAXBXz1WG7qSnkEdmi3FbD0VktZ3FHd5Z1Q3n0UqGO-wg7YpHg8y-i3oqo6mh0j7BqP';
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const btn = document.getElementById('sendBtn');
+            const ok  = document.getElementById('successMsg');
+            const err = document.getElementById('errorMsg');
+            const msg = input.value.trim();
+            ok.classList.remove('show'); err.classList.remove('show');
+            if (!msg) { err.textContent = '❌ Write something first!'; err.classList.add('show'); setTimeout(() => err.classList.remove('show'), 3000); return; }
+            btn.classList.add('loading'); btn.disabled = true; btn.textContent = 'Sending…';
+            try {
+                const res = await fetch(WEBHOOK, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: `📨 **New Message**\n\n${msg}\n\n*${new Date().toLocaleString()}*` })
+                });
+                if (res.ok) { input.value = ''; ok.classList.add('show'); spark({ clientX: innerWidth/2, clientY: innerHeight/2 }); setTimeout(() => ok.classList.remove('show'), 4000); }
+                else throw new Error();
+            } catch { err.textContent = '❌ Something went wrong. Try again.'; err.classList.add('show'); setTimeout(() => err.classList.remove('show'), 3000); }
+            finally { btn.classList.remove('loading'); btn.disabled = false; btn.textContent = 'Send Message 🚀'; }
         }
-
-        function initGame() {
-            shuffleEmojis();
-            const board = document.getElementById('emoji-game-board');
-            board.innerHTML = '';
-            moves = 0;
-            matched = 0;
-            firstCard = null;
-            secondCard = null;
-            canClick = true;
-            gameActive = true;
-            gameStartTime = Date.now();
-            document.getElementById('moves').textContent = '0';
-            document.getElementById('matched').textContent = '0/8';
-            document.getElementById('timer').textContent = '0s';
-
-            gameBoard.forEach((emoji, index) => {
-                const card = document.createElement('div');
-                card.className = 'emoji-card';
-                card.textContent = '?';
-                card.dataset.index = index;
-                card.onclick = () => flipCard(card, index);
-                board.appendChild(card);
-            });
-
-            startTimer();
-        }
-
-        function flipCard(card, index) {
-            if (!canClick || gameBoard[index] === 'matched' || card.classList.contains('flipped')) return;
-
-            card.textContent = gameBoard[index];
-            card.classList.add('flipped');
-
-            if (!firstCard) {
-                firstCard = { card, index };
-            } else if (!secondCard) {
-                secondCard = { card, index };
-                canClick = false;
-                moves++;
-                document.getElementById('moves').textContent = moves;
-                checkMatch();
-            }
-        }
-
-        function checkMatch() {
-            const match = gameBoard[firstCard.index] === gameBoard[secondCard.index];
-
-            setTimeout(() => {
-                if (match) {
-                    firstCard.card.classList.add('matched');
-                    secondCard.card.classList.add('matched');
-                    gameBoard[firstCard.index] = 'matched';
-                    gameBoard[secondCard.index] = 'matched';
-                    matched++;
-                    document.getElementById('matched').textContent = `${matched}/8`;
-
-                    if (matched === 8) {
-                        gameActive = false;
-                        setTimeout(() => alert(`🎉 You won in ${moves} moves!`), 300);
-                    }
-                } else {
-                    firstCard.card.textContent = '?';
-                    firstCard.card.classList.remove('flipped');
-                    secondCard.card.textContent = '?';
-                    secondCard.card.classList.remove('flipped');
-                }
-
-                firstCard = null;
-                secondCard = null;
-                canClick = true;
-            }, 800);
-        }
-
-        function startTimer() {
-            const timerInterval = setInterval(() => {
-                if (!gameActive) {
-                    clearInterval(timerInterval);
-                    return;
-                }
-                const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
-                document.getElementById('timer').textContent = elapsed + 's';
-            }, 100);
-        }
-
-        function resetGame() {
-            initGame();
-        }
-
-        initGame();
+        document.getElementById('messageInput').addEventListener('keydown', e => { if ((e.ctrlKey||e.metaKey) && e.key === 'Enter') sendMessage(); });
     </script>
 </body>
 </html>
