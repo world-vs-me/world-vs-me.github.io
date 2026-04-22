@@ -1,495 +1,717 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hardik</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hardik</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        :root {
-            --primary: #ff006e;
-            --secondary: #8338ec;
-            --accent: #00f5ff;
-            --dark-bg: #0a0e27;
-            --card-bg: rgba(255, 255, 255, 0.07);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --text-primary: #ffffff;
-            --text-secondary: #9ba3b8;
-        }
+    :root {
+      --bg:       #0d0d0d;
+      --surface:  #141414;
+      --line:     rgba(255,255,255,0.07);
+      --text:     #f0ece4;
+      --muted:    #6b6760;
+      --accent:   #c9a96e;   /* warm gold */
+      --red:      #e60023;
+    }
 
-        html, body { width: 100%; overflow-x: hidden; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a0f2e 40%, #0f1a3f 70%, #0a0e27 100%);
-            background-attachment: fixed;
-            color: var(--text-primary);
-        }
+    /* ── Grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.028;
+      pointer-events: none;
+    }
 
-        /* Particles */
-        #particles-container { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-        .particle {
-            position: absolute; width: 3px; height: 3px;
-            background: var(--accent); border-radius: 50%;
-            opacity: 0.35; box-shadow: 0 0 10px rgba(0,245,255,0.6);
-        }
-        .sparkle {
-            position: fixed; pointer-events: none; font-size: 1.3em; z-index: 999;
-            animation: sparkleAnim 0.9s ease-out forwards;
-        }
+    /* ── Page ── */
+    .page {
+      position: relative; z-index: 1;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+    }
 
-        /* Layout */
-        .container {
-            position: relative; z-index: 10;
-            min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center;
-            padding: 60px 20px 40px;
-            max-width: 920px; margin: 0 auto;
-        }
+    /* ── Profile ── */
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 52px;
+      animation: rise 0.9s cubic-bezier(0.16,1,0.3,1) both;
+    }
 
-        /* Profile */
-        .profile-section { text-align: center; margin-bottom: 34px; animation: fadeInDown 0.7s ease-out; }
-        .profile-pic {
-            width: 112px; height: 112px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 3px; margin: 0 auto 18px;
-            box-shadow: 0 0 32px rgba(255,0,110,0.5), 0 0 64px rgba(131,56,236,0.2);
-            animation: float 3.5s ease-in-out infinite;
-        }
-        .profile-pic img {
-            width: 100%; height: 100%; border-radius: 50%;
-            object-fit: cover; border: 2px solid var(--dark-bg); display: block;
-        }
-        .username {
-            font-size: 2.3em; font-weight: 700;
-            background: linear-gradient(135deg, var(--accent), var(--primary));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; margin-bottom: 6px; letter-spacing: 0.5px;
-        }
-        .bio-flags { font-size: 1.6em; margin-bottom: 10px; letter-spacing: 5px; }
-        .bio { font-size: 0.93em; color: var(--text-secondary); min-height: 22px; }
-        .typing-cursor {
-            display: inline-block; width: 2px; height: 1em;
-            background: var(--accent); margin-left: 2px;
-            vertical-align: text-bottom; animation: blink 0.8s infinite;
-        }
+    .avatar-wrap {
+      position: relative;
+      width: 88px; height: 88px;
+      margin-bottom: 24px;
+    }
 
-        /* Quote */
-        .quotes-section {
-            background: linear-gradient(135deg, rgba(0,245,255,0.06), rgba(131,56,236,0.06));
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0,245,255,0.18);
-            border-radius: 18px; padding: 26px 30px;
-            width: 100%; max-width: 560px; margin-bottom: 32px;
-            text-align: center; animation: fadeInDown 0.7s ease-out 0.1s both;
-            position: relative;
-        }
-        .quotes-section::before {
-            content: '"'; position: absolute; top: 6px; left: 12px;
-            font-size: 3.2em; color: rgba(0,245,255,0.13); line-height: 1;
-        }
-        .quote-text {
-            font-size: 1.1em; font-style: italic;
-            color: var(--text-secondary); min-height: 46px;
-            margin-bottom: 10px; line-height: 1.65;
-        }
-        .quote-author { font-size: 0.82em; color: var(--accent); font-weight: 600; }
+    .avatar-wrap img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(8%);
+    }
 
-        /* Status */
-        .status-bar {
-            display: flex; gap: 10px; justify-content: center;
-            margin-bottom: 38px; flex-wrap: wrap;
-            animation: fadeInDown 0.7s ease-out 0.15s both;
-        }
-        .status-item {
-            background: var(--card-bg); backdrop-filter: blur(10px);
-            border: 1px solid rgba(0,245,255,0.12);
-            padding: 9px 18px; border-radius: 50px;
-            font-size: 0.86em; color: var(--text-secondary);
-        }
+    .avatar-ring {
+      position: absolute; inset: -3px;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      opacity: 0.5;
+    }
 
-        /* Section Title */
-        .section-title {
-            font-size: 0.74em; font-weight: 700; text-align: center;
-            margin-bottom: 18px; color: var(--text-secondary);
-            text-transform: uppercase; letter-spacing: 3.5px;
-        }
+    .name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
 
-        /* Links */
-        .links-section { width: 100%; margin-bottom: 40px; animation: fadeInUp 0.7s ease-out 0.2s both; }
-        .links-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px; max-width: 740px; margin: 0 auto;
-        }
-        .link-card {
-            background: var(--card-bg); backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border); border-radius: 16px;
-            padding: 20px 14px; text-decoration: none; color: var(--text-primary);
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; gap: 8px; min-height: 100px;
-            position: relative; overflow: hidden;
-            transition: all 0.32s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .link-card::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(0,245,255,0.07), transparent);
-            opacity: 0; transition: opacity 0.32s;
-        }
-        .link-card:hover { border-color: rgba(0,245,255,0.35); transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,245,255,0.09); }
-        .link-card:hover::after { opacity: 1; }
-        .link-icon { font-size: 1.85em; transition: transform 0.32s; }
-        .link-card:hover .link-icon { transform: scale(1.12); }
-        .link-name { font-size: 0.82em; font-weight: 600; color: var(--text-secondary); transition: color 0.3s; }
-        .link-card:hover .link-name { color: var(--text-primary); }
+    .flags {
+      font-size: 1.1rem;
+      letter-spacing: 4px;
+      margin-bottom: 12px;
+      opacity: 0.7;
+    }
 
-        /* Now Playing */
-        .now-playing { margin-bottom: 40px; width: 100%; max-width: 400px; animation: fadeInUp 0.7s ease-out 0.25s both; }
-        .now-playing-card {
-            background: var(--card-bg); backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border); border-radius: 18px;
-            padding: 22px 24px; text-align: center;
-        }
-        .now-playing-label {
-            font-size: 0.7em; color: var(--text-secondary);
-            text-transform: uppercase; letter-spacing: 3px; font-weight: 600; margin-bottom: 10px;
-        }
-        .now-playing-track {
-            font-size: 1em; color: var(--accent); margin-bottom: 16px;
-            min-height: 26px; animation: pulse 2.5s ease-in-out infinite;
-        }
-        .spotify-link {
-            display: inline-block; padding: 8px 20px;
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            border-radius: 50px; color: white; text-decoration: none;
-            font-weight: 600; font-size: 0.85em; transition: all 0.3s;
-        }
-        .spotify-link:hover { transform: scale(1.04); box-shadow: 0 8px 22px rgba(131,56,236,0.4); }
+    .bio-line {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      min-height: 20px;
+    }
 
-        /* Pinterest Corner */
-        .pinterest-section { width: 100%; margin-bottom: 44px; animation: fadeInUp 0.7s ease-out 0.3s both; }
-        .pinterest-header {
-            display: flex; align-items: center; justify-content: center;
-            gap: 10px; margin-bottom: 18px;
-        }
-        .pinterest-dot {
-            width: 7px; height: 7px; border-radius: 50%;
-            background: #e60023; box-shadow: 0 0 8px rgba(230,0,35,0.55);
-        }
-        .pinterest-mosaic {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 160px;
-            gap: 10px;
-            max-width: 740px; margin: 0 auto;
-        }
-        .pin-item {
-            border-radius: 14px; overflow: hidden;
-            position: relative; cursor: pointer;
-            transition: transform 0.32s ease, box-shadow 0.32s ease;
-        }
-        .pin-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
-        .pin-item:nth-child(6) { grid-column: span 2; }
-        .pin-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .pin-item::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.4));
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .pin-item:hover { transform: scale(1.025); box-shadow: 0 12px 28px rgba(0,0,0,0.4); }
-        .pin-item:hover::after { opacity: 1; }
-        .pinterest-cta { text-align: center; margin-top: 16px; }
-        .pinterest-btn {
-            display: inline-flex; align-items: center; gap: 7px;
-            padding: 10px 24px; background: #e60023;
-            border-radius: 50px; color: white; text-decoration: none;
-            font-weight: 600; font-size: 0.88em;
-            box-shadow: 0 4px 14px rgba(230,0,35,0.28);
-            transition: all 0.3s;
-        }
-        .pinterest-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(230,0,35,0.45); }
+    .cursor {
+      display: inline-block;
+      width: 1px; height: 0.85em;
+      background: var(--accent);
+      margin-left: 1px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
 
-        /* Message */
-        .message-section { margin-bottom: 44px; width: 100%; max-width: 540px; animation: fadeInUp 0.7s ease-out 0.35s both; }
-        .message-card {
-            background: var(--card-bg); backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border); border-radius: 18px;
-            padding: 26px; text-align: center;
-        }
-        .message-card-title { font-size: 1.1em; font-weight: 700; margin-bottom: 6px; }
-        .message-card-sub { font-size: 0.86em; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.6; }
-        .message-input {
-            width: 100%; padding: 13px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(0,245,255,0.18);
-            border-radius: 12px; color: var(--text-primary);
-            font-size: 0.93em; font-family: inherit;
-            min-height: 100px; resize: vertical;
-            margin-bottom: 12px; display: block;
-            transition: border-color 0.3s, background 0.3s;
-        }
-        .message-input::placeholder { color: rgba(255,255,255,0.3); }
-        .message-input:focus { outline: none; border-color: rgba(0,245,255,0.45); background: rgba(255,255,255,0.08); }
-        .send-btn {
-            width: 100%; padding: 12px 24px;
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            border: none; color: white; border-radius: 12px;
-            font-weight: 600; cursor: pointer; font-size: 0.93em;
-            transition: all 0.3s;
-        }
-        .send-btn:hover { transform: scale(1.02); box-shadow: 0 8px 22px rgba(131,56,236,0.4); }
-        .send-btn:active { transform: scale(0.99); }
-        .send-btn.loading { opacity: 0.6; cursor: not-allowed; }
-        .feedback-msg { font-size: 0.86em; margin-top: 10px; opacity: 0; transition: opacity 0.3s; }
-        .feedback-msg.success { color: #4ade80; }
-        .feedback-msg.error   { color: #f87171; }
-        .feedback-msg.show    { opacity: 1; }
+    /* ── Divider ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--line);
+      margin: 0 0 40px;
+    }
 
-        /* Footer */
-        .footer { text-align: center; padding: 16px; color: var(--text-secondary); font-size: 0.8em; opacity: 0.5; }
+    /* ── Quote ── */
+    .quote-block {
+      margin-bottom: 52px;
+      padding-left: 20px;
+      border-left: 1px solid var(--accent);
+      animation: rise 0.9s cubic-bezier(0.16,1,0.3,1) 0.08s both;
+    }
 
-        /* Animations */
-        @keyframes fadeInDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes fadeInUp   { from { opacity:0; transform:translateY(20px);  } to { opacity:1; transform:translateY(0); } }
-        @keyframes float      { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
-        @keyframes blink      { 0%,49%,100%{opacity:1;} 50%,99%{opacity:0;} }
-        @keyframes pulse      { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
-        @keyframes sparkleAnim { 0%{opacity:1;transform:translate(0,0) scale(1);} 100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0);} }
+    .quote-text {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text);
+      min-height: 36px;
+      margin-bottom: 8px;
+    }
 
-        /* Responsive */
-        @media (max-width: 620px) {
-            .container { padding: 38px 14px 28px; }
-            .username  { font-size: 1.85em; }
-            .links-grid { grid-template-columns: repeat(4, 1fr); gap: 9px; }
-            .link-card  { min-height: 80px; padding: 14px 8px; gap: 6px; }
-            .link-icon  { font-size: 1.5em; }
-            .link-name  { font-size: 0.72em; }
-            .pinterest-mosaic { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; }
-            .pin-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
-            .pin-item:nth-child(6) { grid-column: span 1; }
-        }
-    </style>
+    .quote-author {
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* ── Status chips ── */
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 52px;
+      animation: rise 0.9s cubic-bezier(0.16,1,0.3,1) 0.12s both;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 5px 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    .chip span { color: var(--accent); margin-right: 5px; }
+
+    /* ── Section heading ── */
+    .label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    /* ── Links ── */
+    .links-section {
+      width: 100%;
+      margin-bottom: 52px;
+      animation: rise 0.9s cubic-bezier(0.16,1,0.3,1) 0.16s both;
+    }
+
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .link-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      color: var(--text);
+      transition: color 0.25s;
+      cursor: pointer;
+    }
+
+    .link-row:first-child { border-top: 1px solid var(--line); }
+
+    .link-row:hover { color: var(--accent); }
+
+    .link-row:hover .link-arrow { transform: translateX(4px); opacity: 1; }
+
+    .link-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .link-icon-box {
+      width: 32px; height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95em;
+      flex-shrink: 0;
+      transition: border-color 0.25s;
+    }
+
+    .link-row:hover .link-icon-box { border-color: rgba(201,169,110,0.3); }
+
+    .link-name-text {
+      font-size: 0.93rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .link-arrow {
+      font-size: 0.85rem;
+      color: var(--muted);
+      opacity: 0.4;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+
+    /* ── Now Playing ── */
+    .playing-section {
+      width: 100%;
+      margin-bottom: 52px;
+      animation: rise 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+    }
+
+    .playing-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .playing-left { display: flex; align-items: center; gap: 14px; }
+
+    .playing-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .bar {
+      width: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: barPulse var(--dur) ease-in-out infinite alternate;
+    }
+
+    .bar:nth-child(1) { --dur: 0.6s; height: 8px; }
+    .bar:nth-child(2) { --dur: 0.9s; height: 14px; }
+    .bar:nth-child(3) { --dur: 0.7s; height: 10px; }
+    .bar:nth-child(4) { --dur: 1.1s; height: 16px; }
+
+    .playing-info { display: flex; flex-direction: column; gap: 2px; }
+
+    .playing-label {
+      font-size: 0.67rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+    }
+
+    .playing-track {
+      font-size: 0.88rem;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .spotify-btn {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      padding: 6px 12px;
+      border-radius: 4px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: all 0.25s;
+      flex-shrink: 0;
+    }
+
+    .spotify-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+    /* ── Pinterest Corner ── */
+    .pinterest-section {
+      width: 100%;
+      margin-bottom: 52px;
+      animation: rise 0.9s cubic-bezier(0.16,1,0.3,1) 0.24s both;
+    }
+
+    .pin-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 120px 120px;
+      gap: 6px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .pin-img {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pin-img:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .pin-img:nth-child(6) { grid-column: span 2; }
+
+    .pin-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
+      filter: grayscale(15%) brightness(0.92);
+    }
+
+    .pin-img:hover img { transform: scale(1.05); filter: grayscale(0%) brightness(1); }
+
+    .pin-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+    }
+
+    .pin-footer-text {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .pin-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      color: var(--red);
+      text-decoration: none;
+      transition: opacity 0.25s;
+    }
+
+    .pin-link:hover { opacity: 0.7; }
+
+    /* ── Message ── */
+    .message-section {
+      width: 100%;
+      margin-bottom: 40px;
+      animation: rise 0.9s cubic-bezier(0.16,1,0.3,1) 0.28s both;
+    }
+
+    .msg-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 28px 24px;
+      background: var(--surface);
+    }
+
+    .msg-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+
+    .msg-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.65;
+    }
+
+    textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      padding: 0 0 12px;
+      resize: none;
+      min-height: 90px;
+      margin-bottom: 20px;
+      outline: none;
+      transition: border-color 0.3s;
+      display: block;
+    }
+
+    textarea::placeholder { color: var(--muted); font-style: italic; }
+    textarea:focus { border-bottom-color: var(--accent); }
+
+    .send-btn {
+      background: none;
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 11px 22px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .send-btn:hover { background: var(--text); color: var(--bg); }
+    .send-btn.loading { opacity: 0.4; cursor: not-allowed; }
+
+    .feedback {
+      font-size: 0.8rem;
+      margin-top: 12px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feedback.ok  { color: #7fc97f; }
+    .feedback.err { color: #e07070; }
+    .feedback.show { opacity: 1; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 16px 0;
+      opacity: 0.5;
+    }
+
+    /* ── Keyframes ── */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    @keyframes barPulse {
+      from { transform: scaleY(0.3); }
+      to   { transform: scaleY(1); }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 480px) {
+      .page { padding: 56px 18px 48px; }
+      .name { font-size: 1.9rem; }
+      .pin-grid { grid-template-rows: 100px 100px; gap: 5px; }
+    }
+  </style>
 </head>
 <body>
-    <div id="particles-container"></div>
+<div class="page">
 
-    <div class="container">
-
-        <!-- Profile -->
-        <div class="profile-section">
-            <div class="profile-pic">
-                <img src="https://jmgbb.com/i/eLZgsi0oFE" alt="Profile">
-            </div>
-            <h1 class="username">Hardik</h1>
-            <div class="bio-flags">🇮🇳🇺🇦🇵🇱🇺🇿🇰🇿</div>
-            <p class="bio"><span id="bio-text"></span><span class="typing-cursor"></span></p>
-        </div>
-
-        <!-- Quote -->
-        <div class="quotes-section">
-            <div class="quote-text"><span id="quote-text"></span><span class="typing-cursor"></span></div>
-            <div class="quote-author" id="quote-author"></div>
-        </div>
-
-        <!-- Status -->
-        <div class="status-bar">
-            <div class="status-item"><span>🎵 </span><span id="status-mood">Vibing</span></div>
-            <div class="status-item"><span>✨ </span><span id="status-vibe">Inspired</span></div>
-        </div>
-
-        <!-- Links -->
-        <div class="links-section">
-            <div class="section-title">Connect</div>
-            <div class="links-grid">
-                <a href="https://www.instagram.com/hxr.d1k_/" class="link-card" target="_blank" onclick="spark(event)">
-                    <div class="link-icon">📸</div><div class="link-name">Instagram</div>
-                </a>
-                <a href="https://snapchat.com/t/vFarL20X" class="link-card" target="_blank" onclick="spark(event)">
-                    <div class="link-icon">👻</div><div class="link-name">Snapchat</div>
-                </a>
-                <a href="https://pin.it/5NceMlQD5" class="link-card" target="_blank" onclick="spark(event)">
-                    <div class="link-icon">📌</div><div class="link-name">Pinterest</div>
-                </a>
-                <a href="https://open.spotify.com/user/313kdis3wuynj2266vafritabcv4?si=yMbbZYb1RweN9vWzMH2bNw" class="link-card" target="_blank" onclick="spark(event)">
-                    <div class="link-icon">🎧</div><div class="link-name">Spotify</div>
-                </a>
-                <a href="https://discordapp.com/users/777759728562470952" class="link-card" target="_blank" onclick="spark(event)">
-                    <div class="link-icon">💬</div><div class="link-name">Discord</div>
-                </a>
-                <a href="https://t.me/dilerbekbek" class="link-card" target="_blank" onclick="spark(event)">
-                    <div class="link-icon">✈️</div><div class="link-name">Telegram</div>
-                </a>
-                <a href="mailto:hardikmathur2003@icloud.com" class="link-card" onclick="spark(event)">
-                    <div class="link-icon">✉️</div><div class="link-name">Email</div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Now Playing -->
-        <div class="now-playing">
-            <div class="now-playing-card">
-                <div class="now-playing-label">Currently listening to</div>
-                <div class="now-playing-track" id="now-playing">—</div>
-                <a href="https://open.spotify.com/user/313kdis3wuynj2266vafritabcv4?si=yMbbZYb1RweN9vWzMH2bNw" class="spotify-link" target="_blank">Open Spotify</a>
-            </div>
-        </div>
-
-        <!-- Pinterest Corner -->
-        <div class="pinterest-section">
-            <div class="pinterest-header">
-                <div class="pinterest-dot"></div>
-                <div class="section-title" style="margin-bottom:0">Pinterest Corner</div>
-                <div class="pinterest-dot"></div>
-            </div>
-            <div class="pinterest-mosaic">
-                <div class="pin-item"><img src="https://look.jmgbb.com/images/mnEsTS7EKU.jpg" alt="pin"></div>
-                <div class="pin-item"><img src="https://look.jmgbb.com/images/fUIq2c2tpV.jpg" alt="pin"></div>
-                <div class="pin-item"><img src="https://look.jmgbb.com/images/wwFULG4a-1.jpg" alt="pin"></div>
-                <div class="pin-item"><img src="https://look.jmgbb.com/images/hEqbIVxY7d.jpg" alt="pin"></div>
-                <div class="pin-item"><img src="https://look.jmgbb.com/images/OG8UICQIsj.jpg" alt="pin"></div>
-                <div class="pin-item"><img src="https://look.jmgbb.com/images/FcpY4wdhPC.jpg" alt="pin"></div>
-                <div class="pin-item"><img src="https://look.jmgbb.com/images/OR2pEe6XwX.jpg" alt="pin"></div>
-                <div class="pin-item"><img src="https://look.jmgbb.com/images/dpnze4RYNG.jpg" alt="pin"></div>
-            </div>
-            <div class="pinterest-cta">
-                <a href="https://pin.it/5NceMlQD5" class="pinterest-btn" target="_blank">
-                    <span>📌</span> View my Pinterest
-                </a>
-            </div>
-        </div>
-
-        <!-- Message -->
-        <div class="message-section">
-            <div class="section-title">Anonymous Message</div>
-            <div class="message-card">
-                <div class="message-card-title">Drop me something 💬</div>
-                <div class="message-card-sub">Say hi, share a thought, or leave a vibe. No tracking, no spam.</div>
-                <textarea class="message-input" id="messageInput" placeholder="What's on your mind?"></textarea>
-                <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send Message 🚀</button>
-                <div class="feedback-msg success" id="successMsg">✅ Message sent!</div>
-                <div class="feedback-msg error"   id="errorMsg">❌ Something went wrong. Try again.</div>
-            </div>
-        </div>
-
+  <!-- Profile -->
+  <div class="profile">
+    <div class="avatar-wrap">
+      <img src="https://look.jmgbb.com/images/0BqOZEbZYd.jpg" alt="Hardik" />
+      <div class="avatar-ring"></div>
     </div>
+    <h1 class="name">Hardik</h1>
+    <div class="flags">🇮🇳 🇺🇦 🇵🇱 🇺🇿 🇰🇿</div>
+    <p class="bio-line"><span id="bio-text"></span><span class="cursor"></span></p>
+  </div>
 
-    <div class="footer">made with care, for no one but myself ✦</div>
+  <div class="divider"></div>
 
-    <script>
-        // Particles
-        const pc = document.getElementById('particles-container');
-        class Particle {
-            constructor() {
-                this.x = Math.random() * innerWidth;
-                this.y = Math.random() * innerHeight;
-                this.vx = (Math.random() - 0.5) * 0.38;
-                this.vy = (Math.random() - 0.5) * 0.38;
-                this.el = Object.assign(document.createElement('div'), { className: 'particle' });
-                this.el.style.cssText = `left:${this.x}px;top:${this.y}px`;
-                pc.appendChild(this.el);
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if (this.x < 0 || this.x > innerWidth)  this.vx *= -1;
-                if (this.y < 0 || this.y > innerHeight) this.vy *= -1;
-                this.el.style.left = this.x + 'px'; this.el.style.top = this.y + 'px';
-            }
-        }
-        const pts = Array.from({ length: 38 }, () => new Particle());
-        (function loop() { pts.forEach(p => p.update()); requestAnimationFrame(loop); })();
+  <!-- Quote -->
+  <div class="quote-block">
+    <div class="quote-text"><span id="quote-text"></span><span class="cursor"></span></div>
+    <div class="quote-author" id="quote-author"></div>
+  </div>
 
-        // Sparkles
-        function spark(e) {
-            const icons = ['✨','💫','⭐','🌟'];
-            for (let i = 0; i < 9; i++) {
-                const s = document.createElement('div');
-                s.className = 'sparkle';
-                const a = (Math.PI * 2 * i) / 9, v = 3.5 + Math.random() * 4;
-                s.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;--tx:${Math.cos(a)*v*42}px;--ty:${Math.sin(a)*v*42}px`;
-                s.textContent = icons[i % 4];
-                document.body.appendChild(s);
-                setTimeout(() => s.remove(), 900);
-            }
-        }
+  <!-- Status chips -->
+  <div class="chips">
+    <div class="chip"><span>↻</span><span id="chip-mood">—</span></div>
+    <div class="chip"><span>◈</span><span id="chip-vibe">—</span></div>
+  </div>
 
-        // Bio typing
-        const bios = ['Future doctor · Passionate traveller', 'Medicine student exploring the world', 'Driven by curiosity and care'];
-        let bi = 0, bc = 0;
-        const bioEl = document.getElementById('bio-text');
-        function typeBio() {
-            if (bc < bios[bi].length) { bioEl.textContent += bios[bi][bc++]; setTimeout(typeBio, 54); }
-            else setTimeout(() => { bioEl.textContent = ''; bc = 0; bi = (bi + 1) % bios.length; setTimeout(typeBio, 400); }, 2800);
-        }
-        typeBio();
+  <!-- Links -->
+  <div class="links-section">
+    <div class="label">Connect</div>
+    <div class="link-list">
+      <a href="https://www.instagram.com/hxr.d1k_/" class="link-row" target="_blank">
+        <div class="link-left">
+          <div class="link-icon-box">📸</div>
+          <span class="link-name-text">Instagram</span>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a href="https://snapchat.com/t/vFarL20X" class="link-row" target="_blank">
+        <div class="link-left">
+          <div class="link-icon-box">👻</div>
+          <span class="link-name-text">Snapchat</span>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a href="https://pin.it/5NceMlQD5" class="link-row" target="_blank">
+        <div class="link-left">
+          <div class="link-icon-box">📌</div>
+          <span class="link-name-text">Pinterest</span>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a href="https://open.spotify.com/user/313kdis3wuynj2266vafritabcv4?si=yMbbZYb1RweN9vWzMH2bNw" class="link-row" target="_blank">
+        <div class="link-left">
+          <div class="link-icon-box">🎧</div>
+          <span class="link-name-text">Spotify</span>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a href="https://discordapp.com/users/777759728562470952" class="link-row" target="_blank">
+        <div class="link-left">
+          <div class="link-icon-box">💬</div>
+          <span class="link-name-text">Discord</span>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a href="https://t.me/dilerbekbek" class="link-row" target="_blank">
+        <div class="link-left">
+          <div class="link-icon-box">✈️</div>
+          <span class="link-name-text">Telegram</span>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a href="mailto:hardikmathur2003@icloud.com" class="link-row">
+        <div class="link-left">
+          <div class="link-icon-box">✉️</div>
+          <span class="link-name-text">Email</span>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+    </div>
+  </div>
 
-        // Quotes
-        const quotes = [
-            { text: 'Not all those who wander are lost', author: 'J.R.R. Tolkien' },
-            { text: 'The cure for anything is salt water — sweat, tears, or the sea', author: 'Isak Dinesen' },
-            { text: 'Music gives a soul to the universe, wings to the mind', author: 'Plato' },
-            { text: 'The world is a book — those who do not travel read only one page', author: 'Saint Augustine' },
-            { text: 'Where there is love for mankind, there is love for the art of medicine', author: 'Hippocrates' },
-            { text: "One's destination is never a place, but a new way of seeing things", author: 'Henry Miller' },
-            { text: 'It always seems impossible until it\'s done', author: 'Nelson Mandela' },
-            { text: 'The purpose of life is to live it, to taste experience to the utmost', author: 'Eleanor Roosevelt' },
-        ];
-        let qi = 0, qc = 0;
-        const qEl = document.getElementById('quote-text'), qAuth = document.getElementById('quote-author');
-        function typeQ() {
-            if (qc < quotes[qi].text.length) { qEl.textContent += quotes[qi].text[qc++]; setTimeout(typeQ, 34); }
-            else {
-                qAuth.textContent = '— ' + quotes[qi].author;
-                setTimeout(() => { qEl.textContent = ''; qAuth.textContent = ''; qc = 0; qi = (qi+1)%quotes.length; setTimeout(typeQ, 400); }, 4000);
-            }
-        }
-        typeQ();
+  <!-- Now Playing -->
+  <div class="playing-section">
+    <div class="label">Now Playing</div>
+    <div class="playing-card">
+      <div class="playing-left">
+        <div class="playing-bars">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        <div class="playing-info">
+          <span class="playing-label">Listening to</span>
+          <span class="playing-track" id="now-playing">—</span>
+        </div>
+      </div>
+      <a href="https://open.spotify.com/user/313kdis3wuynj2266vafritabcv4?si=yMbbZYb1RweN9vWzMH2bNw" class="spotify-btn" target="_blank">Spotify →</a>
+    </div>
+  </div>
 
-        // Status
-        const moods = ['Studying','Traveling','Exploring','Learning','Growing','Resting'];
-        const vibes = ['Focused','Adventurous','Inspired','Curious','Driven','Peaceful'];
-        setInterval(() => {
-            document.getElementById('status-mood').textContent = moods[Math.floor(Math.random()*moods.length)];
-            document.getElementById('status-vibe').textContent = vibes[Math.floor(Math.random()*vibes.length)];
-        }, 4000);
+  <!-- Pinterest Corner -->
+  <div class="pinterest-section">
+    <div class="label">Pinterest Corner</div>
+    <div class="pin-grid">
+      <div class="pin-img"><img src="https://look.jmgbb.com/images/mnEsTS7EKU.jpg" alt="" /></div>
+      <div class="pin-img"><img src="https://look.jmgbb.com/images/fUIq2c2tpV.jpg" alt="" /></div>
+      <div class="pin-img"><img src="https://look.jmgbb.com/images/wwFULG4a-1.jpg" alt="" /></div>
+      <div class="pin-img"><img src="https://look.jmgbb.com/images/hEqbIVxY7d.jpg" alt="" /></div>
+      <div class="pin-img"><img src="https://look.jmgbb.com/images/OG8UICQIsj.jpg" alt="" /></div>
+      <div class="pin-img"><img src="https://look.jmgbb.com/images/FcpY4wdhPC.jpg" alt="" /></div>
+      <div class="pin-img"><img src="https://look.jmgbb.com/images/OR2pEe6XwX.jpg" alt="" /></div>
+      <div class="pin-img"><img src="https://look.jmgbb.com/images/dpnze4RYNG.jpg" alt="" /></div>
+    </div>
+    <div class="pin-footer">
+      <span class="pin-footer-text">A visual diary</span>
+      <a href="https://pin.it/5NceMlQD5" class="pin-link" target="_blank">View board →</a>
+    </div>
+  </div>
 
-        // Now Playing
-        const tracks = [
-            "🎶 Marvin's Room — Drake","🎵 Hotline Bling — Drake","💫 Take Care — Drake ft. Rihanna",
-            "✨ Fake Love — Drake","🔥 God's Plan — Drake","🌙 One Dance — Drake",
-            "🌟 Wonderful — The Lumineers","💫 Ophelia — The Lumineers","🎵 Stubborn Love — The Lumineers",
-            "🔥 Ho Hey — The Lumineers","💔 Video Games — Lana Del Rey","🌙 Young and Beautiful — Lana Del Rey",
-            "✨ Summertime Sadness — Lana Del Rey","🎶 Lust for Life — Lana Del Rey","🌊 Norman Fucking Rockwell — Lana Del Rey",
-            "🎵 Blinding Lights — The Weeknd","🌃 Starboy — The Weeknd","💜 Save Your Tears — The Weeknd",
-            "🎧 Can't Feel My Face — The Weeknd","🔮 Die For You — The Weeknd","🌹 Earned It — The Weeknd",
-            "🎶 Levitating — Dua Lipa","💃 Don't Start Now — Dua Lipa",
-            "🌟 As It Was — Harry Styles","🎵 Watermelon Sugar — Harry Styles",
-        ];
-        const npEl = document.getElementById('now-playing');
-        npEl.textContent = tracks[Math.floor(Math.random()*tracks.length)];
-        setInterval(() => { npEl.textContent = tracks[Math.floor(Math.random()*tracks.length)]; }, 5500);
+  <!-- Message -->
+  <div class="message-section">
+    <div class="label">Say Something</div>
+    <div class="msg-card">
+      <div class="msg-heading">Anonymous message</div>
+      <div class="msg-sub">Drop a thought. No names, no tracking — straight to me.</div>
+      <textarea id="msgInput" placeholder="What's on your mind…" rows="4"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">Send</button>
+      <div class="feedback ok"  id="okMsg">Message sent.</div>
+      <div class="feedback err" id="errMsg">Something went wrong.</div>
+    </div>
+  </div>
 
-        // Message
-        const WEBHOOK = 'https://discord.com/api/webhooks/1487404084683342037/bPAXBXz1WG7qSnkEdmi3FbD0VktZ3FHd5Z1Q3n0UqGO-wg7YpHg8y-i3oqo6mh0j7BqP';
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const btn = document.getElementById('sendBtn');
-            const ok  = document.getElementById('successMsg');
-            const err = document.getElementById('errorMsg');
-            const msg = input.value.trim();
-            ok.classList.remove('show'); err.classList.remove('show');
-            if (!msg) { err.textContent = '❌ Write something first!'; err.classList.add('show'); setTimeout(() => err.classList.remove('show'), 3000); return; }
-            btn.classList.add('loading'); btn.disabled = true; btn.textContent = 'Sending…';
-            try {
-                const res = await fetch(WEBHOOK, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ content: `📨 **New Message**\n\n${msg}\n\n*${new Date().toLocaleString()}*` })
-                });
-                if (res.ok) { input.value = ''; ok.classList.add('show'); spark({ clientX: innerWidth/2, clientY: innerHeight/2 }); setTimeout(() => ok.classList.remove('show'), 4000); }
-                else throw new Error();
-            } catch { err.textContent = '❌ Something went wrong. Try again.'; err.classList.add('show'); setTimeout(() => err.classList.remove('show'), 3000); }
-            finally { btn.classList.remove('loading'); btn.disabled = false; btn.textContent = 'Send Message 🚀'; }
-        }
-        document.getElementById('messageInput').addEventListener('keydown', e => { if ((e.ctrlKey||e.metaKey) && e.key === 'Enter') sendMessage(); });
-    </script>
+</div>
+
+<div class="footer">Hardik · 2025</div>
+
+<script>
+  // ── Bio typing ──
+  const bios = [
+    'Future doctor · passionate traveller',
+    'Medicine student exploring the world',
+    'Driven by curiosity and care',
+  ];
+  let bi = 0, bc = 0;
+  const bioEl = document.getElementById('bio-text');
+  function typeBio() {
+    if (bc < bios[bi].length) { bioEl.textContent += bios[bi][bc++]; setTimeout(typeBio, 54); }
+    else setTimeout(() => { bioEl.textContent = ''; bc = 0; bi = (bi+1)%bios.length; setTimeout(typeBio, 500); }, 3000);
+  }
+  typeBio();
+
+  // ── Quotes ──
+  const quotes = [
+    { t: 'Not all those who wander are lost',                               a: 'J.R.R. Tolkien'     },
+    { t: 'The cure for anything is salt water — sweat, tears, or the sea', a: 'Isak Dinesen'        },
+    { t: 'Music gives a soul to the universe, wings to the mind',           a: 'Plato'              },
+    { t: 'The world is a book — those who do not travel read only one page',a: 'Saint Augustine'    },
+    { t: 'Where there is love for mankind, there is love for medicine',     a: 'Hippocrates'        },
+    { t: "One's destination is never a place, but a new way of seeing",     a: 'Henry Miller'      },
+    { t: 'It always seems impossible until it\'s done',                     a: 'Nelson Mandela'     },
+  ];
+  let qi = 0, qc = 0;
+  const qEl = document.getElementById('quote-text'), qAuth = document.getElementById('quote-author');
+  function typeQ() {
+    if (qc < quotes[qi].t.length) { qEl.textContent += quotes[qi].t[qc++]; setTimeout(typeQ, 32); }
+    else {
+      qAuth.textContent = '— ' + quotes[qi].a;
+      setTimeout(() => { qEl.textContent=''; qAuth.textContent=''; qc=0; qi=(qi+1)%quotes.length; setTimeout(typeQ,500); }, 4500);
+    }
+  }
+  typeQ();
+
+  // ── Status chips ──
+  const moods = ['Studying','Traveling','Exploring','Resting','Growing'];
+  const vibes = ['Focused','Inspired','Curious','Peaceful','Driven'];
+  const mEl = document.getElementById('chip-mood'), vEl = document.getElementById('chip-vibe');
+  function updateChips() {
+    mEl.textContent = moods[Math.floor(Math.random()*moods.length)];
+    vEl.textContent = vibes[Math.floor(Math.random()*vibes.length)];
+  }
+  updateChips();
+  setInterval(updateChips, 5000);
+
+  // ── Now Playing ──
+  const tracks = [
+    "Marvin's Room — Drake","Hotline Bling — Drake","Take Care — Drake ft. Rihanna",
+    "Fake Love — Drake","God's Plan — Drake","One Dance — Drake",
+    "Wonderful — The Lumineers","Ophelia — The Lumineers","Stubborn Love — The Lumineers",
+    "Ho Hey — The Lumineers","Video Games — Lana Del Rey","Young and Beautiful — Lana Del Rey",
+    "Summertime Sadness — Lana Del Rey","Lust for Life — Lana Del Rey","Norman Fucking Rockwell — Lana Del Rey",
+    "Blinding Lights — The Weeknd","Starboy — The Weeknd","Save Your Tears — The Weeknd",
+    "Can't Feel My Face — The Weeknd","Die For You — The Weeknd","Earned It — The Weeknd",
+    "Levitating — Dua Lipa","Don't Start Now — Dua Lipa",
+    "As It Was — Harry Styles","Watermelon Sugar — Harry Styles",
+  ];
+  const npEl = document.getElementById('now-playing');
+  function pickTrack() { npEl.style.opacity='0'; setTimeout(()=>{ npEl.textContent=tracks[Math.floor(Math.random()*tracks.length)]; npEl.style.opacity='1'; },300); }
+  npEl.style.transition='opacity 0.3s';
+  pickTrack();
+  setInterval(pickTrack, 6000);
+
+  // ── Message ──
+  const WEBHOOK = 'https://discord.com/api/webhooks/1487404084683342037/bPAXBXz1WG7qSnkEdmi3FbD0VktZ3FHd5Z1Q3n0UqGO-wg7YpHg8y-i3oqo6mh0j7BqP';
+  async function sendMsg() {
+    const input = document.getElementById('msgInput');
+    const btn   = document.getElementById('sendBtn');
+    const ok    = document.getElementById('okMsg');
+    const err   = document.getElementById('errMsg');
+    const msg   = input.value.trim();
+    ok.classList.remove('show'); err.classList.remove('show');
+    if (!msg) { err.textContent = 'Write something first.'; err.classList.add('show'); setTimeout(()=>err.classList.remove('show'),3000); return; }
+    btn.classList.add('loading'); btn.disabled=true; btn.textContent='Sending…';
+    try {
+      const res = await fetch(WEBHOOK, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ content: `📨 **New message**\n\n${msg}\n\n*${new Date().toLocaleString()}*` })
+      });
+      if (res.ok) { input.value=''; ok.classList.add('show'); setTimeout(()=>ok.classList.remove('show'),4000); }
+      else throw 0;
+    } catch { err.textContent='Something went wrong. Try again.'; err.classList.add('show'); setTimeout(()=>err.classList.remove('show'),3000); }
+    finally { btn.classList.remove('loading'); btn.disabled=false; btn.textContent='Send'; }
+  }
+  document.getElementById('msgInput').addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key==='Enter') sendMsg(); });
+</script>
 </body>
 </html>
